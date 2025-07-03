@@ -18,3 +18,11 @@ visaTypes: [
   "Marriage Visa (O)",
   "Work Visa (B)"
 ]
+questsHeader: "Visa Checklist",
+questsList: [
+  "Submit TM30",
+  "Extend Tourist Visa",
+  "Apply for Re-entry Permit",
+  "Report 90 Days",
+  "Renew Visa"
+]
