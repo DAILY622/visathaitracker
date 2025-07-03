@@ -9,7 +9,14 @@ export default {
   rewards: "Rewards",
   leaderboard: "Leaderboard",
   settings: "Settings"
-};
+  questsHeader: "Visa Checklist",
+questsList:
+  "Submit TM30",
+  "Extend Tourist Visa",
+  "Apply for Re-entry Permit",
+  "Report 90 Days",
+  "Renew Visa"
+]
 visaTypesHeader: "Visa Types in Thailand",
 visaTypes: [
   "Tourist Visa (TR)",
