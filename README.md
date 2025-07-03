@@ -1,4 +1,6 @@
+
 # VisaTracker Thailand 🇹🇭
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Localized version of [VisaTracker](https://github.com/yourusername/visatracker) tailored for Thai users.
 
