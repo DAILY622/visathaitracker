@@ -11,3 +11,7 @@ window.switchLang = function (lang) {
   localStorage.setItem('lang', lang);
   location.reload();
 };
+document.getElementById('logoutBtn').textContent = strings.logout;
+document.getElementById('profileBtn').textContent = strings.profile;
+document.getElementById('questsBtn').textContent = strings.quests;
+document.getElementById('rewardsBtn').textContent = strings.rewards;
