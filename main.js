@@ -25,6 +25,18 @@ strings.visaTypes.forEach(type => {
 });
 // Display quests checklist
 document.getElementById('questsHeader').textContent = strings.questsHeader;
+const questIcons = {
+  "Submit TM30": "📨",
+  "Extend Tourist Visa": "📅",
+  "Apply for Re-entry Permit": "🔁",
+  "Report 90 Days": "🗓️",
+  "Renew Visa": "♻️",
+  "แจ้งที่พัก (TM30)": "📨",
+  "ขอต่อวีซ่าท่องเที่ยว": "📅",
+  "ขอใบอนุญาตกลับเข้าประเทศ": "🔁",
+  "รายงานตัวทุก 90 วัน": "🗓️",
+  "ต่ออายุวีซ่า": "♻️"
+};
 strings.questsList.forEach((task, index) => {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
@@ -41,6 +53,7 @@ strings.questsList.forEach((task, index) => {
   });
 
   li.appendChild(checkbox);
-  li.appendChild(document.createTextNode(task));
+ const icon = questIcons[task] || "📝";
+li.appendChild(document.createTextNode(`${icon} ${task}`));
   questsList.appendChild(li);
 });
