@@ -65,7 +65,25 @@ strings.questsList.forEach((task, index) => {
 });
 
 function updateProgress() {
+  function updateProgress() {
   const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+  const done = Object.values(saved).filter(Boolean).length;
+  const percent = Math.round((done / total) * 100);
+
+  const bar = document.getElementById('progressBar');
+  const label = document.getElementById('progressLabel');
+
+  bar.value = percent;
+  label.textContent = `Progress: ${percent}%`;
+
+  // Toggle green style when full
+  if (percent === 100) {
+    bar.classList.add('full');
+  } else {
+    bar.classList.remove('full');
+  }
+}
+const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   const done = Object.values(saved).filter(Boolean).length;
   const percent = Math.round((done / total) * 100);
   document.getElementById('progressBar').value = percent;
