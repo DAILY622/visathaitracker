@@ -30,7 +30,6 @@ strings.questsList.forEach((task, index) => {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.style.marginRight = '0.5rem';
-
   // Load saved state
   const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   checkbox.checked = saved[index] || false;
