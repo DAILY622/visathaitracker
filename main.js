@@ -39,7 +39,6 @@ const questIcons = {
 };
 const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
 const total = strings.questsList.length;
-let completed = 0;
 
 strings.questsList.forEach((task, index) => {
   const li = document.createElement('li');
@@ -47,25 +46,21 @@ strings.questsList.forEach((task, index) => {
   checkbox.type = 'checkbox';
   checkbox.style.marginRight = '0.5rem';
 
-  // Load saved state
   checkbox.checked = saved[index] || false;
-  if (checkbox.checked) completed++;
 
-  // Save state on change
   checkbox.addEventListener('change', () => {
     saved[index] = checkbox.checked;
     localStorage.setItem('questsProgress', JSON.stringify(saved));
     updateProgress();
   });
 
-  const icon = questIcons?.[task] || "📝";
+  const icon = questIcons[task] || "📝";
   li.appendChild(checkbox);
   li.appendChild(document.createTextNode(`${icon} ${task}`));
   questsList.appendChild(li);
 });
 
 function updateProgress() {
-  function updateProgress() {
   const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   const done = Object.values(saved).filter(Boolean).length;
   const percent = Math.round((done / total) * 100);
@@ -76,19 +71,16 @@ function updateProgress() {
   bar.value = percent;
   label.textContent = `Progress: ${percent}%`;
 
-  // Toggle green style when full
   if (percent === 100) {
     bar.classList.add('full');
   } else {
     bar.classList.remove('full');
-  }
-}
-const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+
+function updateProgress() {
+  function updateProgress() {
+  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   const done = Object.values(saved).filter(Boolean).length;
   const percent = Math.round((done / total) * 100);
-  document.getElementById('progressBar').value = percent;
-  document.getElementById('progressLabel').textContent = `Progress: ${percent}%`;
-}
 
-// Initialize progress bar
-updateProgress();
+  const bar = document.getElementById('progressBar');
+  const label = document.getElementById('progressLabel');
