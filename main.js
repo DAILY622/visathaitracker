@@ -27,12 +27,24 @@ strings.visaTypes.forEach(type => {
 document.getElementById('questsHeader').textContent = strings.questsHeader;
 
 const questsList = document.getElementById('questsList');
-strings.questsList.forEach(task => {
+strings.questsList.forEach((task, index) => {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.style.marginRight = '0.5rem';
+
+  // Load saved state
+  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+  checkbox.checked = saved[index] || false;
+
+  // Save state on change
+  checkbox.addEventListener('change', () => {
+    saved[index] = checkbox.checked;
+    localStorage.setItem('questsProgress', JSON.stringify(saved));
+  });
+
   li.appendChild(checkbox);
   li.appendChild(document.createTextNode(task));
   questsList.appendChild(li);
 });
+
