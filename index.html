@@ -1,7 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <style>
+  #progressBar[value] {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  #progressBar::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 10px;
+  }
+
+  #progressBar::-webkit-progress-value {
+    background-color: #007bff;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  #progressBar.full::-webkit-progress-value {
+    background-color: #28a745; /* Green when full */
+  }
+</style>
+<meta charset="UTF-8" />
   <title>VisaTracker Thailand</title>
 </head>
 <body>
