@@ -10,3 +10,11 @@ export default {
   leaderboard: "Leaderboard",
   settings: "Settings"
 };
+visaTypesHeader: "Visa Types in Thailand",
+visaTypes: [
+  "Tourist Visa (TR)",
+  "Education Visa (ED)",
+  "Retirement Visa (O-A)",
+  "Marriage Visa (O)",
+  "Work Visa (B)"
+]
