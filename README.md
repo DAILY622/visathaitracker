@@ -1,3 +1,21 @@
+<h1 id="welcome"></h1>
+
+<div class="button-group">
+  <button id="loginBtn"></button>
+  <button id="logoutBtn"></button>
+  <button id="profileBtn"></button>
+  <button id="questsBtn"></button>
+  <button id="rewardsBtn"></button>
+</div>
+
+<br /><br />
+<label for="lang">🌐 Language:</label>
+<select id="lang" onchange="switchLang(this.value)">
+  <option value="en">🇬🇧 English</option>
+  <option value="th">🇹🇭 ภาษาไทย</option>
+</select>
+
+<script type="module" src="main.js"></script>
 
 # VisaTracker Thailand 🇹🇭
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
