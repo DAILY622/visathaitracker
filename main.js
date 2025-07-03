@@ -25,8 +25,6 @@ strings.visaTypes.forEach(type => {
 });
 // Display quests checklist
 document.getElementById('questsHeader').textContent = strings.questsHeader;
-
-const questsList = document.getElementById('questsList');
 strings.questsList.forEach((task, index) => {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
@@ -47,4 +45,3 @@ strings.questsList.forEach((task, index) => {
   li.appendChild(document.createTextNode(task));
   questsList.appendChild(li);
 });
-
