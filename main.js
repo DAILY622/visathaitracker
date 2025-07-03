@@ -37,23 +37,40 @@ const questIcons = {
   "รายงานตัวทุก 90 วัน": "🗓️",
   "ต่ออายุวีซ่า": "♻️"
 };
+const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+const total = strings.questsList.length;
+let completed = 0;
+
 strings.questsList.forEach((task, index) => {
   const li = document.createElement('li');
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.style.marginRight = '0.5rem';
+
   // Load saved state
-  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   checkbox.checked = saved[index] || false;
+  if (checkbox.checked) completed++;
 
   // Save state on change
   checkbox.addEventListener('change', () => {
     saved[index] = checkbox.checked;
     localStorage.setItem('questsProgress', JSON.stringify(saved));
+    updateProgress();
   });
 
+  const icon = questIcons?.[task] || "📝";
   li.appendChild(checkbox);
- const icon = questIcons[task] || "📝";
-li.appendChild(document.createTextNode(`${icon} ${task}`));
+  li.appendChild(document.createTextNode(`${icon} ${task}`));
   questsList.appendChild(li);
 });
+
+function updateProgress() {
+  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+  const done = Object.values(saved).filter(Boolean).length;
+  const percent = Math.round((done / total) * 100);
+  document.getElementById('progressBar').value = percent;
+  document.getElementById('progressLabel').textContent = `Progress: ${percent}%`;
+}
+
+// Initialize progress bar
+updateProgress();
