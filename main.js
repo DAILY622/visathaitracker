@@ -47,12 +47,13 @@ strings.questsList.forEach((task, index) => {
   checkbox.style.marginRight = '0.5rem';
 
   checkbox.checked = saved[index] || false;
+updateProgress();
 
-  checkbox.addEventListener('change', () => {
-    saved[index] = checkbox.checked;
-    localStorage.setItem('questsProgress', JSON.stringify(saved));
-    updateProgress();
-  });
+   checkbox.addEventListener('change', () => {
+  saved[index] = checkbox.checked;
+  localStorage.setItem('questsProgress', JSON.stringify(saved));
+  updateProgress();
+});
 
   const icon = questIcons[task] || "📝";
   li.appendChild(checkbox);
@@ -75,15 +76,7 @@ function updateProgress() {
     bar.classList.add('full');
   } else {
     bar.classList.remove('full');
-
-function updateProgress() {
-  function updateProgress() {
-  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
-  const done = Object.values(saved).filter(Boolean).length;
-  const percent = Math.round((done / total) * 100);
-
-  const bar = document.getElementById('progressBar');
-  const label = document.getElementById('progressLabel');
+    
 function updateProgress() {
   const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   const done = Object.values(saved).filter(Boolean).length;
@@ -104,4 +97,3 @@ function updateProgress() {
     }
   }
 }
-updateProgress();
