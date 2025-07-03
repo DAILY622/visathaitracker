@@ -15,3 +15,11 @@ document.getElementById('logoutBtn').textContent = strings.logout;
 document.getElementById('profileBtn').textContent = strings.profile;
 document.getElementById('questsBtn').textContent = strings.quests;
 document.getElementById('rewardsBtn').textContent = strings.rewards;
+document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
+
+const visaList = document.getElementById('visaList');
+strings.visaTypes.forEach(type => {
+  const li = document.createElement('li');
+  li.textContent = type;
+  visaList.appendChild(li);
+});
