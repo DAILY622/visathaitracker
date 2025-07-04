@@ -192,9 +192,12 @@ function showTab(tabName) {
 }
 document.getElementById('tm30Form')?.addEventListener('submit', async function (e) {
   e.preventDefault();
-  const fileInput = document.getElementById('tm30File');
-  const status = document.getElementById('tm30Status');
-
+const submissionDate = document.getElementById('tm30Date').value;
+localStorage.setItem('tm30Date', submissionDate);
+const savedDate = localStorage.getItem('tm30Date');
+if (savedDate) {
+  document.getElementById('tm30Date').value = savedDate;
+}
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];
     const storageRef = firebase.storage().ref(`tm30/${file.name}`);
