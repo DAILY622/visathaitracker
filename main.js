@@ -470,3 +470,31 @@ function signup() {
       document.getElementById('authMessage').textContent = "❌ " + err.message;
     });
 }
+function signup() {
+  const email = document.getElementById('authEmail').value;
+  const pass = document.getElementById('authPassword').value;
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(userCredential => {
+      userCredential.user.sendEmailVerification();
+      document.getElementById('authMessage').style.color = 'green';
+      document.getElementById('authMessage').textContent = "✅ Account created. Please verify your email before logging in.";
+      firebase.auth().signOut();
+    })
+    .catch(err => {
+      document.getElementById('authMessage').style.color = 'red';
+      document.getElementById('authMessage').textContent = "❌ " + err.message;
+    });
+}
+firebase.auth().onAuthStateChanged(user => {
+  if (user && user.emailVerified) {
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('welcome').textContent = `👋 Welcome, ${user.email}`;
+  } else {
+    firebase.auth().signOut();
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('authSection').style.display = 'block';
+    document.getElementById('authMessage').style.color = 'red';
+    document.getElementById('authMessage').textContent = "📧 Please verify your email before logging in.";
+  }
+});
