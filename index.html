@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <label for="userEmail">📧 Your Email Address:</label><br>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <div id="adminFilters" style="margin-bottom: 1rem;">
+  <input type="text" id="filterUID" placeholder="Filter by UID" />
+  <input type="date" id="filterDate" />
+  <button onclick="filterAdminData()">🔍 Filter</button>
+</div>
+<canvas id="tm30Chart" width="400" height="200" style="margin-top: 2rem;"></canvas>
+<label for="userEmail">📧 Your Email Address:</label><br>
 <input type="email" id="userEmail" placeholder="you@example.com" required /><br><br>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
