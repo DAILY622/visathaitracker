@@ -19,6 +19,43 @@ document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
 document.getElementById('profileEmail').textContent = `📧 Email: ${user.email}`;
 document.getElementById('profileUID').textContent = `🆔 UID: ${user.uid}`;
 
+firebase.firestore().collection("visas").get().then(snapshot => {
+  const typeCounts = {};
+  snapshot.forEach(doc => {
+    const type = doc.data().type;
+    typeCounts[type] = (typeCounts[type] || 0) + 1;
+  });
+
+  const ctx = document.getElementById('adminVisaTrends').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(typeCounts),
+      datasets: [{
+        label: 'Visa Types Across All Users',
+        data: Object.values(typeCounts),
+        backgroundColor: '#2196f3'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '📊 Visa Trends (Admin)' }
+      }
+    }
+  });
+});
+const showArchived = document.getElementById('showArchived').checked;
+const today = new Date();
+const filteredVisas = visas.filter(v => {
+  const expiry = new Date(v.expiry);
+  return showArchived || expiry >= today;
+});
+const visaExpiry = new Date(document.getElementById('visaDate').value);
+const daysLeft = Math.floor((visaExpiry - new Date()) / (1000 * 60 * 60 * 24));
+if (daysLeft <= 30 && daysLeft > 0) {
+  document.getElementById('renewalReminder').style.display = 'block';
+}
 const visaList = document.getElementById('visaList');
 strings.visaTypes.forEach(type => {
   const li = document.createElement('li');
