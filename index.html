@@ -168,7 +168,13 @@ input[type="date"] {
 <button onclick="firebase.auth().signOut()">🚪 Logout</button>
 <button id="loginBtn"></button>
 
-    <br /><br />
+ <label for="visaSelector">🧾 Select Visa:</label>
+<select id="visaSelector"></select>
+  <div id="visaTimeline" style="margin-top: 2rem;">
+  <h3>📅 Visa Timeline</h3>
+  <ul id="timelineList" style="list-style: none; padding-left: 0;"></ul>
+</div>
+ <br /><br />
     <label for="lang">🌐 Language:</label>
     <select id="lang" onchange="switchLang(this.value)">
       <option value="en">🇬🇧 English</option>
