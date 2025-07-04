@@ -188,3 +188,11 @@ function showTab(tabName) {
 .tabSection {
   margin-top: 1rem;
 }
+document.getElementById('tm30Form')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const fileInput = document.getElementById('tm30File');
+  if (fileInput.files.length > 0) {
+    localStorage.setItem('tm30Uploaded', 'true');
+    document.getElementById('tm30Status').style.display = 'block';
+  }
+});
