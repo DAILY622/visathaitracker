@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.css" />
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <div id="adminFilters" style="margin-bottom: 1rem;">
   <input type="text" id="filterUID" placeholder="Filter by UID" />
@@ -144,6 +146,10 @@ input[type="date"] {
 </div>
 <div id="dashboard" style="display: none;">
   <!-- Your existing dashboard content -->
+<div id="tm30Heatmap" style="margin-top: 2rem;">
+  <h3>📆 TM30 Submission Calendar</h3>
+  <div id="cal-heatmap"></div>
+</div>
 <div id="userProfile" style="margin-top: 1rem;">
   <h3>👤 Your Profile</h3>
   <p id="profileEmail"></p>
