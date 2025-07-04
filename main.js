@@ -114,3 +114,18 @@ function checkTM30Reminder() {
  updateProgress(); 
 });
 checkTM30Reminder();
+
+  function showVisaCountdown() {
+  // Set your visa expiration date here (YYYY-MM-DD)
+  const expirationDate = new Date('2025-08-15');
+  const today = new Date();
+  const diffTime = expirationDate - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const daysLeftEl = document.getElementById('daysLeft');
+  if (daysLeftEl) {
+    daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
+  }
+}
+showVisaCountdown();
+
