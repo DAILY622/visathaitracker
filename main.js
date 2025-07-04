@@ -33,6 +33,83 @@ firebase.firestore().collection("visas").get().then(snapshot => {
   "Non-Immigrant → Extension": 60
 };
 
+function saveAppointment() {
+  const date = document.getElementById('appointmentDate').value;
+  const time = document.getElementById('appointmentTime').value;
+  const note = document.getElementById('appointmentNote').value;
+  const entry = { date, time, note };
+  const appointments = JSON.parse(localStorage.getItem('visaAppointments') || '[]');
+  appointments.push(entry);
+  localStorage.setItem('visaAppointments', JSON.stringify(appointments));
+  renderAppointments();
+}
+
+firebase.firestore().collection("visas").get().then(snapshot => {
+  const switchCounts = { "Tourist → Education": 0, "Tourist → Volunteer": 0, "Non-Immigrant → Extension": 0 };
+  snapshot.forEach(doc => {
+    const v = doc.data();
+    if (v.type === "Tourist" && v.next === "Education") switchCounts["Tourist → Education"]++;
+    if (v.type === "Tourist" && v.next === "Volunteer") switchCounts["Tourist → Volunteer"]++;
+    if (v.type === "Non-Immigrant" && v.next === "Extension") switchCounts["Non-Immigrant → Extension"]++;
+  });
+
+function generateTrackingLink(uid) {
+  return `https://yourapp.com/track?user=${uid}`;
+}
+const gpsTrail = [
+  { lat: 13.7563, lng: 100.5018, label: "Bangkok" },
+  { lat: 25.276987, lng: 55.296249, label: "Dubai" },
+  { lat: 51.5074, lng: -0.1278, label: "London" }
+];
+
+gpsTrail.forEach((point, i) => {
+  setTimeout(() => {
+    console.log(`✈️ Simulated location: ${point.label} (${point.lat}, ${point.lng})`);
+  }, i * 2000);
+});
+ const deliveryStages = ["Submitted", "Processing", "Approved", "Delivered"];
+const deliveryList = document.getElementById('visaDeliveryList');
+visas.forEach((v, i) => {
+  const li = document.createElement('li');
+  const stage = deliveryStages[i % deliveryStages.length];
+  li.textContent = `📦 ${v.type} visa — Status: ${stage}`;
+  deliveryList.appendChild(li);
+});
+ new Chart(document.getElementById('switchTrendChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(switchCounts),
+      datasets: [{
+        label: 'Visa Switches',
+        data: Object.values(switchCounts),
+        backgroundColor: '#ff9800'
+      }]
+    },
+    options: {
+      plugins: { title: { display: true, text: '📊 Visa Switching Trends (Admin)' } }
+    }
+  });
+});
+function sendVisaSwitchSuggestions() {
+  const userEmail = firebase.auth().currentUser?.email;
+  if (!userEmail || visaSuggestions.length === 0) return;
+  emailjs.send("service_clpexr7", "template_cxs4zgj", {
+    name: "Visa Tracker",
+    email: userEmail,
+    report: visaSuggestions.join('\n')
+  });
+}
+function renderAppointments() {
+  const list = document.getElementById('appointmentList');
+  list.innerHTML = '';
+  const appointments = JSON.parse(localStorage.getItem('visaAppointments') || '[]');
+  appointments.forEach(a => {
+    const li = document.createElement('li');
+    li.textContent = `📅 ${a.date} at ${a.time} — ${a.note}`;
+    list.appendChild(li);
+  });
+}
+renderAppointments();
 if (daysLeft < 30 && v.type.includes("Tourist")) {
   visaSuggestions.push(`🧠 Consider switching to Education visa ($${visaFees["Tourist → Education"]}) or Volunteer visa ($${visaFees["Tourist → Volunteer"]}).`);
 }
