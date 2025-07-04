@@ -131,7 +131,10 @@ function showVisaCountdown() {
     daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
     dateInput.value = expirationDate.toISOString().split('T')[0];
 
-   if (diffDays >= 0 && diffDays <= 7) {
+  if ('Notification' in window && Notification.permission !== 'granted') {
+  Notification.requestPermission();
+}
+ if (diffDays >= 0 && diffDays <= 7) {
   if (!warning.classList.contains('pulse')) {
     warning.classList.add('pulse');
     sound?.play().catch(() => {});
@@ -238,11 +241,11 @@ if (savedTime) {
   const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
 
   if (diffDays >= 90) {
-    const reminder = document.createElement('p');
-    reminder.textContent = '🔔 It’s been over 90 days. Please re-submit your TM30.';
-    reminder.style.color = 'red';
-    reminder.style.fontWeight = 'bold';
-    document.getElementById('tm30Preview').appendChild(reminder);
+  const reminder = document.createElement('p');
+  reminder.textContent = strings.reminder90;
+  reminder.style.color = 'red';
+  reminder.style.fontWeight = 'bold';
+  document.getElementById('tm30Preview').appendChild(reminder);
   }
 }
 document.getElementById('deleteTM30')?.addEventListener('click', async () => {
@@ -250,7 +253,13 @@ document.getElementById('deleteTM30')?.addEventListener('click', async () => {
   if (!url) return;
 
   try {
-    const filePath = decodeURIComponent(new URL(url).pathname.split('/o/')[1].split('?')[0]);
+    if ('Notification' in window && Notification.permission === 'granted') {
+  new Notification('📅 TM30 Reminder Set', {
+    body: 'We’ll remind you to re-submit in 90 days.',
+    icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+  });
+}
+const filePath = decodeURIComponent(new URL(url).pathname.split('/o/')[1].split('?')[0]);
     const storageRef = firebase.storage().ref().child(filePath);
     await storageRef.delete();
 
@@ -274,13 +283,12 @@ document.getElementById('printTM30')?.addEventListener('click', () => {
   const time = localStorage.getItem('tm30Timestamp');
 
   const summary = `
-    TM30 Submission Summary\n
-    ----------------------------\n
-    Submission Date: ${date || 'N/A'}\n
-    Uploaded At: ${time || 'N/A'}\n
-    File URL: ${url || 'N/A'}\n
-  `;
-
+${strings.summaryTitle}\n
+----------------------------\n
+${strings.submissionDate}: ${date || 'N/A'}\n
+${strings.uploadedAt}: ${time || 'N/A'}\n
+${strings.fileURL}: ${url || 'N/A'}\n
+`;
   const printWindow = window.open('', '', 'width=600,height=400');
   printWindow.document.write(`<pre>${summary}</pre>`);
   printWindow.document.close();
