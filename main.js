@@ -199,7 +199,10 @@ document.getElementById('tm30Form')?.addEventListener('submit', async function (
     const file = fileInput.files[0];
     const storageRef = firebase.storage().ref(`tm30/${file.name}`);
     try {
-      await storageRef.put(file);
+     const timestamp = new Date().toLocaleString();
+localStorage.setItem('tm30Timestamp', timestamp);
+document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${timestamp}`;
+ await storageRef.put(file);
       const url = await storageRef.getDownloadURL();
 
       localStorage.setItem('tm30Uploaded', 'true');
@@ -208,7 +211,7 @@ document.getElementById('tm30Form')?.addEventListener('submit', async function (
       document.getElementById('tm30Link').href = url;
       document.getElementById('tm30Preview').style.display = 'block';
 
-      status.textContent = '✅ TM30 uploaded successfully!';
+      status.textContent = strings.uploadSuccess;
       status.style.display = 'block';
     } catch (err) {
       status.textContent = '❌ Upload failed. Please try again.';
@@ -222,3 +225,30 @@ if (savedURL) {
   document.getElementById('tm30Link').href = savedURL;
   document.getElementById('tm30Preview').style.display = 'block';
 }
+const savedTime = localStorage.getItem('tm30Timestamp');
+if (savedTime) {
+  document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${savedTime}`;
+}
+document.getElementById('deleteTM30')?.addEventListener('click', async () => {
+  const url = localStorage.getItem('tm30URL');
+  if (!url) return;
+
+  try {
+    const filePath = decodeURIComponent(new URL(url).pathname.split('/o/')[1].split('?')[0]);
+    const storageRef = firebase.storage().ref().child(filePath);
+    await storageRef.delete();
+
+    localStorage.removeItem('tm30URL');
+    localStorage.removeItem('tm30Uploaded');
+    localStorage.removeItem('tm30Timestamp');
+
+    document.getElementById('tm30Preview').style.display = 'none';
+    document.getElementById('tm30Status').textContent = strings.deleteSuccess;
+    document.getElementById('tm30Status').style.color = 'gray';
+    document.getElementById('tm30Status').style.display = 'block';
+  } catch (err) {
+    document.getElementById('tm30Status').textContent = strings.deleteFail;
+    document.getElementById('tm30Status').style.color = 'red';
+    document.getElementById('tm30Status').style.display = 'block';
+  }
+});
