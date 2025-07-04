@@ -195,7 +195,8 @@ function showTab(tabName) {
 }
 document.getElementById('tm30Form')?.addEventListener('submit', async function (e) {
   e.preventDefault();
-  const fileInput = document.getElementById('tm30File');
+const label = document.getElementById('tm30Label').value;
+ const fileInput = document.getElementById('tm30File');
   const status = document.getElementById('tm30Status');
 
   if (fileInput.files.length > 0) {
@@ -329,3 +330,10 @@ historyData.forEach(entry => {
   li.style.marginBottom = '1rem';
   historyList.appendChild(li);
 });
+history.push({ label, date: submissionDate, uploadedAt: timestamp, file: url });
+li.innerHTML = `
+  🏷️ ${entry.label || '—'}<br>
+  📅 ${strings.submissionDate}: ${entry.date}<br>
+  🕒 ${strings.uploadedAt}: ${entry.uploadedAt}<br>
+  <a href="${entry.file}" target="_blank">🔗 View File</a>
+`;
