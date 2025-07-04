@@ -380,13 +380,16 @@ document.getElementById('emailReport')?.addEventListener('click', () => {
     report += `Files:\n${(entry.files || [entry.file]).join('\n')}\n\n`;
   });
 
-  emailjs.send("service_clpexr7", "template_cxs4zgj", {
-    name: "Visa Tracker",
-    email: "trackervisa304@gmail.com",
-    report: report
-  }).then(() => {
-    alert("✅ Report emailed successfully!");
-  }, () => {
-    alert("❌ Failed to send email.");
-  });
+ const userEmail = document.getElementById('userEmail').value;
+
+emailjs.send("service_clpexr7", "template_cxs4zgj", {
+  name: "Visa Tracker",
+  email: userEmail,
+  report: report
 });
+const lastSent = localStorage.getItem('lastReportSent');
+const now = new Date();
+if (!lastSent || new Date(lastSent).getMonth() !== now.getMonth()) {
+  alert("📧 It's time to send your monthly TM30 report!");
+}
+localStorage.setItem('lastReportSent', new Date().toISOString());
