@@ -16,6 +16,8 @@ document.getElementById('profileBtn').textContent = strings.profile;
 document.getElementById('questsBtn').textContent = strings.quests;
 document.getElementById('rewardsBtn').textContent = strings.rewards;
 document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
+document.getElementById('profileEmail').textContent = `📧 Email: ${user.email}`;
+document.getElementById('profileUID').textContent = `🆔 UID: ${user.uid}`;
 
 const visaList = document.getElementById('visaList');
 strings.visaTypes.forEach(type => {
