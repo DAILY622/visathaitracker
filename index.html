@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "visathaitracking.firebaseapp.com",
+    projectId: "visathaitracking",
+    storageBucket: "visathaitracking.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const storage = firebase.storage();
+</script>
+<style>
 #dashboard {
   background: #f9f9f9;
   border-radius: 10px;
@@ -61,6 +75,29 @@ input[type="date"] {
 </style>
 <meta charset="UTF-8" />
   <title>VisaTracker Thailand</title>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAtYl9L2eWF3RWXqgZjJ7WgYuNsqGGMqpk",
+    authDomain: "visathaitracking.firebaseapp.com",
+    projectId: "visathaitracking",
+    storageBucket: "visathaitracking.firebasestorage.app",
+    messagingSenderId: "773532291684",
+    appId: "1:773532291684:web:dca617af952b0f09be8571",
+    measurementId: "G-SDSEGV8TT0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </head>
 <audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
 <body>
@@ -121,15 +158,50 @@ input[type="date"] {
 <div id="tab-checklist" class="tabSection">
  <div id="tab-visaTypes" class="tabSection" style="display: none;">
   <h2>📅 Visa Types in Thailand</h2>
-  <ul style="line-height: 1.8;">
-    <li>🧳 <strong>Tourist Visa (TR):</strong> 60 days + 30-day extension</li>
-    <li>🎓 <strong>Education Visa (ED):</strong> For students enrolled in Thai institutions</li>
-    <li>👨‍👩‍👧 <strong>Non-Immigrant O:</strong> For family, retirement, or volunteering</li>
-    <li>💼 <strong>Non-Immigrant B:</strong> For business or employment</li>
-    <li>🛐 <strong>Religious Visa (R):</strong> For missionaries and religious workers</li>
-    <li>🧘 <strong>Medical Visa:</strong> For long-term treatment or wellness retreats</li>
-  </ul>
-</div>
+  
+<ul style="line-height: 1.8;">
+  <li>🧳 <strong><a href="https://www.immigration.go.th/en/?page_id=1772" target="_blank">Tourist Visa (TR)</a>:</strong> 60 days + 30-day extension</li>
+  <li>🎓 <strong><a href="https://www.immigration.go.th/en/?page_id=1774" target="_blank">Education Visa (ED)</a>:</strong> For students enrolled in Thai institutions</li>
+  <li>👨‍👩‍👧 <strong><a href="https://www.immigration.go.th/en/?page_id=1776" target="_blank">Non-Immigrant O</a>:</strong> For family, retirement, or volunteering</li>
+  <li>💼 <strong><a href="https://www.immigration.go.th/en/?page_id=1778" target="_blank">Non-Immigrant B</a>:</strong> For business or employment</li>
+</ul>
+<h3>📊 Visa Comparison</h3>
+<table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr style="background: #f0f0f0;">
+      <th style="padding: 0.5rem; border: 1px solid #ccc;">Visa Type</th>
+      <th style="padding: 0.5rem; border: 1px solid #ccc;">Duration</th>
+      <th style="padding: 0.5rem; border: 1px solid #ccc;">Extension</th>
+      <th style="padding: 0.5rem; border: 1px solid #ccc;">Cost (THB)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.5rem; border: 1px solid #ccc;">Tourist (TR)</td>
+      <td>60 days</td>
+      <td>+30 days</td>
+      <td>1,900</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem; border: 1px solid #ccc;">Education (ED)</td>
+      <td>90 days</td>
+      <td>Renewable</td>
+      <td>2,000+</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem; border: 1px solid #ccc;">Non-O</td>
+      <td>90 days</td>
+      <td>1 year</td>
+      <td>1,900</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem; border: 1px solid #ccc;">Non-B</td>
+      <td>90 days</td>
+      <td>1 year</td>
+      <td>2,000+</td>
+    </tr>
+  </tbody>
+</table>
 
 <div id="tab-countdown" class="tabSection" style="display: none;">
   <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
