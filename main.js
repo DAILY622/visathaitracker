@@ -131,16 +131,21 @@ function showVisaCountdown() {
     daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
     dateInput.value = expirationDate.toISOString().split('T')[0];
 
-    if (diffDays >= 0 && diffDays <= 7) {
-      if (!warning.classList.contains('pulse')) {
-        warning.classList.add('pulse');
-        sound?.play().catch(() => {});
-      }
-      warning.style.display = 'block';
-    } else {
-      warning.style.display = 'none';
-      warning.classList.remove('pulse');
+   if (diffDays >= 0 && diffDays <= 7) {
+  if (!warning.classList.contains('pulse')) {
+    warning.classList.add('pulse');
+    sound?.play().catch(() => {});
+
+    // Send browser notification
+    if (Notification.permission === 'granted') {
+      new Notification('⚠️ Visa Expiry Alert', {
+        body: `Your visa expires in ${diffDays} day${diffDays === 1 ? '' : 's'}.`,
+        icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+      });
     }
+  }
+  warning.style.display = 'block';
+} 
   } else {
     daysLeftEl.textContent = '--';
     warning.style.display = 'none';
@@ -153,3 +158,9 @@ function showVisaCountdown() {
 }
 
 showVisaCountdown();
+function requestNotificationPermission() {
+  if ('Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission();
+  }
+}
+requestNotificationPermission();
