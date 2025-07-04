@@ -419,3 +419,54 @@ firebase.auth().onAuthStateChanged(user => {
     document.getElementById('authSection').style.display = 'block';
   }
 });
+function resetPassword() {
+  const email = document.getElementById('authEmail').value;
+  if (!email) {
+    document.getElementById('authMessage').textContent = "Please enter your email to reset password.";
+    return;
+  }
+  firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      document.getElementById('authMessage').style.color = 'green';
+      document.getElementById('authMessage').textContent = "📧 Password reset email sent!";
+    })
+    .catch(err => {
+      document.getElementById('authMessage').style.color = 'red';
+      document.getElementById('authMessage').textContent = "❌ " + err.message;
+    });
+}
+const user = firebase.auth().currentUser;
+const uid = user ? user.uid : 'guest';
+const historyKey = `tm30History_${uid}`;
+const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+history.push({ label, date: submissionDate, uploadedAt: timestamp, file: url, notes });
+localStorage.setItem(historyKey, JSON.stringify(history));
+const user = firebase.auth().currentUser;
+const uid = user ? user.uid : 'guest';
+const historyKey = `tm30History_${uid}`;
+const historyData = JSON.parse(localStorage.getItem(historyKey) || '[]');
+function login() {
+  const email = document.getElementById('authEmail').value;
+  const pass = document.getElementById('authPassword').value;
+  firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      document.getElementById('authMessage').textContent = "";
+    })
+    .catch(err => {
+      document.getElementById('authMessage').style.color = 'red';
+      document.getElementById('authMessage').textContent = "❌ " + err.message;
+    });
+}
+
+function signup() {
+  const email = document.getElementById('authEmail').value;
+  const pass = document.getElementById('authPassword').value;
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(() => {
+      document.getElementById('authMessage').textContent = "";
+    })
+    .catch(err => {
+      document.getElementById('authMessage').style.color = 'red';
+      document.getElementById('authMessage').textContent = "❌ " + err.message;
+    });
+}
