@@ -131,6 +131,10 @@ input[type="date"] {
 <button onclick="resetPassword()">Forgot Password?</button>
 <p id="authMessage" style="color: red; margin-top: 0.5rem;"></p>
 </div>
+<div id="adminPanel" style="display: none; margin-top: 2rem;">
+  <h3>🗂️ Admin: All TM30 Submissions</h3>
+  <ul id="adminFirestoreList" style="padding-left: 1rem;"></ul>
+</div>
 <div id="dashboard" style="display: none;">
   <!-- Your existing dashboard content -->
 <div id="userProfile" style="margin-top: 1rem;">
@@ -281,3 +285,5 @@ input[type="date"] {
   </form>
   <p id="tm30Status" style="color: green; display: none;">✅ TM30 uploaded successfully!</p>
 </div>
+<button id="exportFirestoreCSV" style="margin-top: 1rem;">📤 Export All TM30 to CSV</button>
+<button onclick="googleLogin()">🔐 Sign in with Google</button>
