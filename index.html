@@ -66,7 +66,13 @@ input[type="date"] {
 <body>
   <div id="dashboard" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
     <h1 id="welcome"></h1>
-    <button id="loginBtn"></button>
+    <nav id="navTabs" style="margin-bottom: 1rem;">
+  <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
+  <button class="tabBtn" onclick="showTab('countdown')">⏳ Countdown</button>
+  <button class="tabBtn" onclick="showTab('tm30')">🧾 TM30</button>
+  <button class="tabBtn" onclick="showTab('visaTypes')">📅 Visa Types</button>
+</nav>
+<button id="loginBtn"></button>
 
     <br /><br />
     <label for="lang">🌐 Language:</label>
@@ -105,3 +111,22 @@ input[type="date"] {
   <audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
   <script type="module" src="main.js"></script>
 </body>
+<div id="tab-checklist" class="tabSection">
+  <h2 id="questsHeader"></h2>
+  <div id="progressContainer">...</div>
+  <ul id="questsList"></ul>
+  <div id="tm30Reminder">...</div>
+</div>
+
+<div id="tab-countdown" class="tabSection" style="display: none;">
+  <div id="visaCountdown">...</div>
+  <div id="visaWarning">...</div>
+</div>
+
+<div id="tab-tm30" class="tabSection" style="display: none;">
+  <p>🧾 TM30 form upload coming soon!</p>
+</div>
+
+<div id="tab-visaTypes" class="tabSection" style="display: none;">
+  <p>📅 Visa types and info will be added here.</p>
+</div>
