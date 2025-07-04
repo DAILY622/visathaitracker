@@ -190,15 +190,25 @@ function showTab(tabName) {
 .tabSection {
   margin-top: 1rem;
 }
-document.getElementById('tm30Form')?.addEventListener('submit', function (e) {
+document.getElementById('tm30Form')?.addEventListener('submit', async function (e) {
   e.preventDefault();
   const fileInput = document.getElementById('tm30File');
+  const status = document.getElementById('tm30Status');
+
   if (fileInput.files.length > 0) {
-    localStorage.setItem('tm30Uploaded', 'true');
-    document.getElementById('tm30Status').style.display = 'block';
+    const file = fileInput.files[0];
+    const storageRef = firebase.storage().ref(`tm30/${file.name}`);
+    try {
+      await storageRef.put(file);
+      const url = await storageRef.getDownloadURL();
+      localStorage.setItem('tm30Uploaded', 'true');
+      localStorage.setItem('tm30URL', url);
+      status.textContent = '✅ TM30 uploaded successfully!';
+      status.style.display = 'block';
+    } catch (err) {
+      status.textContent = '❌ Upload failed. Please try again.';
+      status.style.color = 'red';
+      status.style.display = 'block';
+    }
   }
 });
-const lastTab = localStorage.getItem('activeTab') || 'checklist';
-showTab(lastTab);
-const lastTab = localStorage.getItem('activeTab') || 'checklist';
-showTab(lastTab);
