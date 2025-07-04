@@ -170,6 +170,7 @@ input[type="date"] {
   <h3>📚 Submission History</h3>
   <ul id="historyList" style="padding-left: 1rem;"></ul>
 <button id="clearHistory" style="margin-top: 0.5rem;">🧹 Clear History</button>
+<button id="exportCSV" style="margin-top: 0.5rem;">📤 Export to CSV</button>
 </div><ul style="line-height: 1.8;">
   <li>🧳 <strong><a href="https://www.immigration.go.th/en/?page_id=1772" target="_blank">Tourist Visa (TR)</a>:</strong> 60 days + 30-day extension</li>
   <li>🎓 <strong><a href="https://www.immigration.go.th/en/?page_id=1774" target="_blank">Education Visa (ED)</a>:</strong> For students enrolled in Thai institutions</li>
@@ -229,7 +230,9 @@ input[type="date"] {
 <div id="tab-tm30" class="tabSection" style="display: none;">
   <h2>🧾 Upload TM30 Form</h2>
   <form id="tm30Form">
-    <label for="tm30File">Choose your TM30 PDF or image:</label><br>
+    <label for="tm30Label">🏷️ Label this submission (e.g. Chiang Mai condo):</label><br>
+<input type="text" id="tm30Label" placeholder="Optional" /><br><br>
+<label for="tm30File">Choose your TM30 PDF or image:</label><br>
     <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
    <label for="tm30Date">📅 Submission Date:</label><br>
 <p id="tm30Time" style="margin-top: 0.5rem; font-style: italic;"></p>
