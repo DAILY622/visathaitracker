@@ -177,6 +177,10 @@ input[type="date"] {
   <li>👨‍👩‍👧 <strong><a href="https://www.immigration.go.th/en/?page_id=1776" target="_blank">Non-Immigrant O</a>:</strong> For family, retirement, or volunteering</li>
   <li>💼 <strong><a href="https://www.immigration.go.th/en/?page_id=1778" target="_blank">Non-Immigrant B</a>:</strong> For business or employment</li>
 </ul>
+<div id="tm30Calendar" style="margin-top: 1.5rem;">
+  <h3>📅 TM30 Calendar</h3>
+  <ul id="calendarList" style="padding-left: 1rem;"></ul>
+</div>
 <h3>📊 Visa Comparison</h3>
 <table style="width: 100%; border-collapse: collapse;">
   <thead>
@@ -216,7 +220,8 @@ input[type="date"] {
 </table>
 
 <div id="tab-countdown" class="tabSection" style="display: none;">
-  <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
+ <button id="downloadReport" style="margin-top: 0.5rem;">🧾 Download TM30 Report (TXT)</button>
+ <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
     ⏳ Visa expires in: <span id="daysLeft">--</span> days
     <br>
     <label for="visaDate">📅 Set your visa expiration date:</label>
@@ -230,7 +235,9 @@ input[type="date"] {
 <div id="tab-tm30" class="tabSection" style="display: none;">
   <h2>🧾 Upload TM30 Form</h2>
   <form id="tm30Form">
-    <label for="tm30Label">🏷️ Label this submission (e.g. Chiang Mai condo):</label><br>
+   <label for="tm30Notes">📝 Notes (optional):</label><br>
+<textarea id="tm30Notes" rows="3" placeholder="e.g. Submitted at Chiang Mai Immigration Office"></textarea><br><br>
+ <label for="tm30Label">🏷️ Label this submission (e.g. Chiang Mai condo):</label><br>
 <input type="text" id="tm30Label" placeholder="Optional" /><br><br>
 <label for="tm30File">Choose your TM30 PDF or image:</label><br>
     <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
