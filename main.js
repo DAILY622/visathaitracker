@@ -170,8 +170,10 @@ function showTab(tabName) {
   });
   const active = document.getElementById(`tab-${tabName}`);
   if (active) active.style.display = 'block';
+  localStorage.setItem('activeTab', tabName);
 }
-.tabBtn {
+
+  .tabBtn {
   background: #eee;
   border: none;
   padding: 0.5rem 1rem;
@@ -196,3 +198,5 @@ document.getElementById('tm30Form')?.addEventListener('submit', function (e) {
     document.getElementById('tm30Status').style.display = 'block';
   }
 });
+const lastTab = localStorage.getItem('activeTab') || 'checklist';
+showTab(lastTab);
