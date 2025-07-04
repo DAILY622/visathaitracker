@@ -143,10 +143,11 @@ input[type="date"] {
 </div>
 
 <div id="tab-tm30" class="tabSection" style="display: none;">
-  <p>🧾 TM30 form upload coming soon!</p>
-</div>
-
-<div id="tab-visaTypes" class="tabSection" style="display: none;">
-  <h2 id="visaHeader"></h2>
-  <ul id="visaList"></ul>
+  <h2>🧾 Upload TM30 Form</h2>
+  <form id="tm30Form">
+    <label for="tm30File">Choose your TM30 PDF or image:</label><br>
+    <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
+    <button type="submit">Upload</button>
+  </form>
+  <p id="tm30Status" style="color: green; display: none;">✅ TM30 uploaded successfully!</p>
 </div>
