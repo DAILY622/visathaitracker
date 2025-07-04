@@ -115,29 +115,41 @@ function checkTM30Reminder() {
 });
 checkTM30Reminder();
 
-  function showVisaCountdown() {
+function showVisaCountdown() {
   const storedDate = localStorage.getItem('visaExpirationDate');
   const expirationDate = storedDate ? new Date(storedDate) : null;
   const today = new Date();
 
   const daysLeftEl = document.getElementById('daysLeft');
   const dateInput = document.getElementById('visaDate');
-if (expirationDate) {
-  const diffTime = expirationDate - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
-  dateInput.value = expirationDate.toISOString().split('T')[0];
-
   const warning = document.getElementById('visaWarning');
-  if (diffDays >= 0 && diffDays <= 7) {
-    warning.style.display = 'block';
+  const sound = document.getElementById('warningSound');
+
+  if (expirationDate) {
+    const diffTime = expirationDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
+    dateInput.value = expirationDate.toISOString().split('T')[0];
+
+    if (diffDays >= 0 && diffDays <= 7) {
+      if (!warning.classList.contains('pulse')) {
+        warning.classList.add('pulse');
+        sound?.play().catch(() => {});
+      }
+      warning.style.display = 'block';
+    } else {
+      warning.style.display = 'none';
+      warning.classList.remove('pulse');
+    }
   } else {
+    daysLeftEl.textContent = '--';
     warning.style.display = 'none';
   }
 
   dateInput.addEventListener('change', () => {
     localStorage.setItem('visaExpirationDate', dateInput.value);
-    showVisaCountdown(); // refresh countdown
+    showVisaCountdown();
   });
 }
+
 showVisaCountdown();
