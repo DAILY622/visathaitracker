@@ -580,3 +580,51 @@ function googleLogin() {
       document.getElementById('authMessage').textContent = "❌ " + err.message;
     });
 }
+function filterAdminData() {
+  const uidFilter = document.getElementById('filterUID').value.trim();
+  const dateFilter = document.getElementById('filterDate').value;
+  const adminList = document.getElementById('adminFirestoreList');
+  adminList.innerHTML = '';
+
+  firebase.firestore().collection("tm30").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const matchUID = !uidFilter || data.uid.includes(uidFilter);
+      const matchDate = !dateFilter || data.date === dateFilter;
+      if (matchUID && matchDate) {
+        const li = document.createElement('li');
+        li.innerHTML = `📧 ${data.uid}<br>📅 ${data.date}<br>🏷️ ${data.label}<br>📝 ${data.notes || '—'}<br><a href="${data.file}" target="_blank">🔗 View</a>`;
+        adminList.appendChild(li);
+      }
+    });
+  });
+}
+if (adminUIDs.includes(firebase.auth().currentUser.uid)) {
+  new Notification("📥 New TM30 Submission", {
+    body: `Label: ${label || '—'} | Date: ${submissionDate}`,
+    icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
+  });
+}
+const dates = historyData.map(e => e.date);
+const counts = {};
+dates.forEach(d => counts[d] = (counts[d] || 0) + 1);
+
+const ctx = document.getElementById('tm30Chart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: Object.keys(counts),
+    datasets: [{
+      label: 'TM30 Submissions',
+      data: Object.values(counts),
+      backgroundColor: '#4caf50'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: '📊 TM30 Submission Trends' }
+    }
+  }
+});
