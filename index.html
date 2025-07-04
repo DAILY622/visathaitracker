@@ -111,16 +111,35 @@ input[type="date"] {
   <audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
   <script type="module" src="main.js"></script>
 </body>
+<nav id="navTabs" style="margin-bottom: 1rem;">
+  <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
+  <button class="tabBtn" onclick="showTab('countdown')">⏳ Countdown</button>
+  <button class="tabBtn" onclick="showTab('tm30')">🧾 TM30</button>
+  <button class="tabBtn" onclick="showTab('visaTypes')">📅 Visa Types</button>
+</nav>
+
 <div id="tab-checklist" class="tabSection">
   <h2 id="questsHeader"></h2>
-  <div id="progressContainer">...</div>
+  <div id="progressContainer">
+    <label id="progressLabel" for="progressBar">Progress:</label>
+    <progress id="progressBar" value="0" max="100" style="width: 100%; height: 20px;"></progress>
+  </div>
   <ul id="questsList"></ul>
-  <div id="tm30Reminder">...</div>
+  <div id="tm30Reminder" style="margin-top: 1rem; color: red; font-weight: bold; display: none;">
+    ⚠️ Don’t forget to submit your TM30!
+  </div>
 </div>
 
 <div id="tab-countdown" class="tabSection" style="display: none;">
-  <div id="visaCountdown">...</div>
-  <div id="visaWarning">...</div>
+  <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
+    ⏳ Visa expires in: <span id="daysLeft">--</span> days
+    <br>
+    <label for="visaDate">📅 Set your visa expiration date:</label>
+    <input type="date" id="visaDate" />
+  </div>
+  <div id="visaWarning" style="color: red; font-weight: bold; display: none;">
+    ⚠️ Your visa is about to expire! Please take action.
+  </div>
 </div>
 
 <div id="tab-tm30" class="tabSection" style="display: none;">
@@ -128,5 +147,6 @@ input[type="date"] {
 </div>
 
 <div id="tab-visaTypes" class="tabSection" style="display: none;">
-  <p>📅 Visa types and info will be added here.</p>
+  <h2 id="visaHeader"></h2>
+  <ul id="visaList"></ul>
 </div>
