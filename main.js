@@ -201,8 +201,13 @@ document.getElementById('tm30Form')?.addEventListener('submit', async function (
     try {
       await storageRef.put(file);
       const url = await storageRef.getDownloadURL();
+
       localStorage.setItem('tm30Uploaded', 'true');
       localStorage.setItem('tm30URL', url);
+
+      document.getElementById('tm30Link').href = url;
+      document.getElementById('tm30Preview').style.display = 'block';
+
       status.textContent = '✅ TM30 uploaded successfully!';
       status.style.display = 'block';
     } catch (err) {
@@ -212,3 +217,8 @@ document.getElementById('tm30Form')?.addEventListener('submit', async function (
     }
   }
 });
+const savedURL = localStorage.getItem('tm30URL');
+if (savedURL) {
+  document.getElementById('tm30Link').href = savedURL;
+  document.getElementById('tm30Preview').style.display = 'block';
+}
