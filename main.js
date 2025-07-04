@@ -66,7 +66,7 @@ function updateProgress() {
   const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
   const done = Object.values(saved).filter(Boolean).length;
   const percent = Math.round((done / total) * 100);
-
+const notes = document.getElementById('tm30Notes').value;
   const bar = document.getElementById('progressBar');
   const label = document.getElementById('progressLabel');
 
@@ -255,7 +255,7 @@ document.getElementById('deleteTM30')?.addEventListener('click', async () => {
 document.getElementById('clearHistory')?.addEventListener('click', () => {
   if (confirm('Are you sure you want to clear all TM30 history?')) {
     localStorage.removeItem('tm30History');
-    document.getElementById('historyList').innerHTML = '';
+    document.getElementById('historyList').innerHTML = ''
   }
 });
 document.getElementById('exportCSV')?.addEventListener('click', () => {
@@ -266,7 +266,8 @@ document.getElementById('exportCSV')?.addEventListener('click', () => {
   history.forEach(entry => {
     const row = `"${entry.label || ''}","${entry.date}","${entry.uploadedAt}","${entry.file}"`;
     csv.push(row);
-  });
+  history.push({ label, date: submissionDate, uploadedAt: timestamp, file: url, notes });
+});
 
   const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
@@ -281,7 +282,6 @@ document.getElementById('exportCSV')?.addEventListener('click', () => {
     if ('Notification' in window && Notification.permission === 'granted') {
   new Notification('📅 TM30 Reminder Set', {
     const history = JSON.parse(localStorage.getItem('tm30History') || '[]');
-history.push({ date: submissionDate, uploadedAt: timestamp, file: url });
 localStorage.setItem('tm30History', JSON.stringify(history));
 body: 'We’ll remind you to re-submit in 90 days.',
     icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
@@ -325,15 +325,44 @@ ${strings.fileURL}: ${url || 'N/A'}\n
 const historyList = document.getElementById('historyList');
 const historyData = JSON.parse(localStorage.getItem('tm30History') || '[]');
 historyData.forEach(entry => {
-  const li = document.createElement('li');
+  const calendarList = document.getElementById('calendarList');
+historyData.forEach(entry => {
+  const item = document.createElement('li');
+  item.textContent = `📌 ${entry.date} — ${entry.label || 'No label'}`;
+  calendarList.appendChild(item);
+});
+const li = document.createElement('li');
   li.innerHTML = `📅 ${strings.submissionDate}: ${entry.date}<br>🕒 ${strings.uploadedAt}: ${entry.uploadedAt}<br><a href="${entry.file}" target="_blank">🔗 View File</a>`;
   li.style.marginBottom = '1rem';
   historyList.appendChild(li);
 });
-history.push({ label, date: submissionDate, uploadedAt: timestamp, file: url });
+history.push({ label, date: submissionDate, uploadedAt: timestamp, file: url, notes });
 li.innerHTML = `
   🏷️ ${entry.label || '—'}<br>
   📅 ${strings.submissionDate}: ${entry.date}<br>
   🕒 ${strings.uploadedAt}: ${entry.uploadedAt}<br>
+  📝 ${entry.notes || '—'}<br>
   <a href="${entry.file}" target="_blank">🔗 View File</a>
 `;
+document.getElementById('downloadReport')?.addEventListener('click', () => {
+  const history = JSON.parse(localStorage.getItem('tm30History') || '[]');
+  if (history.length === 0) return alert('No history to export.');
+
+  let report = 'TM30 Submission Report\n\n';
+  history.forEach((entry, i) => {
+    report += `#${i + 1}\n`;
+    report += `Label: ${entry.label || '—'}\n`;
+    report += `Submission Date: ${entry.date}\n`;
+    report += `Uploaded At: ${entry.uploadedAt}\n`;
+    report += `Notes: ${entry.notes || '—'}\n`;
+    report += `File: ${entry.file}\n\n`;
+  });
+
+  const blob = new Blob([report], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tm30_report.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+});
