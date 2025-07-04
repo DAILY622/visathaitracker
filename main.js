@@ -950,3 +950,39 @@ visas.forEach(v => {
 if (visaSuggestions.length > 0) {
   alert(visaSuggestions.join('\n'));
 }
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open('visa-tracker').then(cache => {
+      return cache.addAll(['./', './index.html', './main.js']);
+    })
+  );
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(response => response || fetch(e.request))
+  );
+});
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log('✅ PWA ready'))
+    .catch(err => console.error('❌ PWA failed', err));
+}
+setInterval(() => {
+  const storedDate = localStorage.getItem('visaExpirationDate');
+  if (!storedDate) return;
+  const daysLeft = Math.ceil((new Date(storedDate) - new Date()) / (1000 * 60 * 60 * 24));
+  if (daysLeft === 7 && Notification.permission === 'granted') {
+    new Notification('📅 Visa Reminder', {
+      body: 'Your visa expires in 7 days. Prepare your documents!',
+      icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
+    });
+  }
+}, 86400000); // Check once per day
+document.getElementById('ocrUpload')?.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+    document.getElementById('ocrResult').textContent = `🧾 Extracted Text:\n${text}`;
+  });
+});
