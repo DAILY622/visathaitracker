@@ -542,3 +542,41 @@ firebase.firestore().collection("tm30").doc(docId).update({
   notes: "Updated Notes"
 });
 Add role-based access, TM30 analytics, and Firestore edit/delete
+if (isAdmin) {
+  document.getElementById('adminPanel').style.display = 'block';
+  const adminList = document.getElementById('adminFirestoreList');
+  firebase.firestore().collection("tm30").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const li = document.createElement('li');
+      li.innerHTML = `📧 ${data.uid}<br>📅 ${data.date}<br>🏷️ ${data.label}<br>📝 ${data.notes || '—'}<br><a href="${data.file}" target="_blank">🔗 View</a>`;
+      adminList.appendChild(li);
+    });
+  });
+}
+document.getElementById('exportFirestoreCSV')?.addEventListener('click', () => {
+  firebase.firestore().collection("tm30").get().then(snapshot => {
+    const csv = ['UID,Label,Date,Uploaded At,Notes,File'];
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      csv.push(`"${d.uid}","${d.label}","${d.date}","${d.uploadedAt}","${d.notes || ''}","${d.file}"`);
+    });
+    const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tm30_firestore.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+});
+function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then(result => {
+      alert("✅ Signed in as " + result.user.email);
+    })
+    .catch(err => {
+      document.getElementById('authMessage').textContent = "❌ " + err.message;
+    });
+}
