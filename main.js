@@ -251,6 +251,30 @@ if (savedTime) {
 document.getElementById('deleteTM30')?.addEventListener('click', async () => {
   const url = localStorage.getItem('tm30URL');
   if (!url) return;
+document.getElementById('clearHistory')?.addEventListener('click', () => {
+  if (confirm('Are you sure you want to clear all TM30 history?')) {
+    localStorage.removeItem('tm30History');
+    document.getElementById('historyList').innerHTML = '';
+  }
+});
+document.getElementById('exportCSV')?.addEventListener('click', () => {
+  const history = JSON.parse(localStorage.getItem('tm30History') || '[]');
+  if (history.length === 0) return alert('No history to export.');
+
+  const csv = ['Label,Submission Date,Uploaded At,File URL'];
+  history.forEach(entry => {
+    const row = `"${entry.label || ''}","${entry.date}","${entry.uploadedAt}","${entry.file}"`;
+    csv.push(row);
+  });
+
+  const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tm30_history.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
 
   try {
     if ('Notification' in window && Notification.permission === 'granted') {
