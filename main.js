@@ -122,14 +122,17 @@ checkTM30Reminder();
 
   const daysLeftEl = document.getElementById('daysLeft');
   const dateInput = document.getElementById('visaDate');
+if (expirationDate) {
+  const diffTime = expirationDate - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
+  dateInput.value = expirationDate.toISOString().split('T')[0];
 
-  if (expirationDate) {
-    const diffTime = expirationDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
-    dateInput.value = expirationDate.toISOString().split('T')[0];
+  const warning = document.getElementById('visaWarning');
+  if (diffDays >= 0 && diffDays <= 7) {
+    warning.style.display = 'block';
   } else {
-    daysLeftEl.textContent = '--';
+    warning.style.display = 'none';
   }
 
   dateInput.addEventListener('change', () => {
