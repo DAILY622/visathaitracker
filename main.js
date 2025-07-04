@@ -48,11 +48,11 @@ strings.questsList.forEach((task, index) => {
 
   checkbox.checked = saved[index] || false;
 updateProgress();
+checkTM30Reminder();
 
 checkbox.addEventListener('change', () => {
   saved[index] = checkbox.checked;
   localStorage.setItem('questsProgress', JSON.stringify(saved));
-  updateProgress();
   checkTM30Reminder();
 });
 
