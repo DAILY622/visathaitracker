@@ -31,7 +31,14 @@
     messagingSenderId: "YOUR_SENDER_ID",
     appId: "YOUR_APP_ID"
   };
-  firebase.initializeApp(firebaseConfig);
+<canvas id="adminVisaTrends" width="400" height="200" style="margin-top: 2rem;"></canvas>
+<label><input type="checkbox" id="showArchived" /> Show Archived Visas</label>
+<ul id="visaList"></ul>
+ 📅 Add a visa renewal scheduler?
+
+🔐 Let users archive expired visas?
+
+📊 Show visa trends across all users (admin-only)? firebase.initializeApp(firebaseConfig);
   const storage = firebase.storage();
 </script>
 <style>
