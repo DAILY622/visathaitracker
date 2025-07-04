@@ -2,10 +2,33 @@
 <html lang="en">
 <head>
   <style>
-  #progressBar[value] {
+input[type="date"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+ #progressBar[value] {
     appearance: none;
     -webkit-appearance: none;
   }
+    @keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#visaWarning.pulse {
+  animation: pulse 1s infinite;
+}
+
 
   #progressBar::-webkit-progress-bar {
     background-color: #eee;
@@ -25,10 +48,19 @@
 <meta charset="UTF-8" />
   <title>VisaTracker Thailand</title>
 </head>
+<audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
 <body>
   <h1 id="welcome"></h1>
   <button id="loginBtn"></button>
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
+#visaWarning.pulse {
+  animation: pulse 1s infinite;
+}
   <br /><br />
   <label for="lang">🌐 Language:</label>
   <select id="lang" onchange="switchLang(this.value)">
