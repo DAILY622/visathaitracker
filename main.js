@@ -26,7 +26,20 @@ firebase.firestore().collection("visas").get().then(snapshot => {
     typeCounts[type] = (typeCounts[type] || 0) + 1;
   });
 
-  const ctx = document.getElementById('adminVisaTrends').getContext('2d');
+ const visaFees = {
+  "Tourist → Education": 80,
+  "Tourist → Volunteer": 60,
+  "Non-Immigrant → Re-entry": 38,
+  "Non-Immigrant → Extension": 60
+};
+
+if (daysLeft < 30 && v.type.includes("Tourist")) {
+  visaSuggestions.push(`🧠 Consider switching to Education visa ($${visaFees["Tourist → Education"]}) or Volunteer visa ($${visaFees["Tourist → Volunteer"]}).`);
+}
+if (daysLeft < 15 && v.type.includes("Non-Immigrant")) {
+  visaSuggestions.push(`🧠 Consider Re-entry permit ($${visaFees["Non-Immigrant → Re-entry"]}) or Extension ($${visaFees["Non-Immigrant → Extension"]}).`);
+}
+ const ctx = document.getElementById('adminVisaTrends').getContext('2d');
   new Chart(ctx, {
     type: 'bar',
     data: {
