@@ -224,7 +224,9 @@ input[type="date"] {
   <form id="tm30Form">
     <label for="tm30File">Choose your TM30 PDF or image:</label><br>
     <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
-    <button type="submit">Upload</button>
+   <label for="tm30Date">📅 Submission Date:</label><br>
+<input type="date" id="tm30Date" required /><br><br>
+ <button type="submit">Upload</button>
   </form>
   <p id="tm30Status" style="color: green; display: none;">✅ TM30 uploaded successfully!</p>
 </div>
