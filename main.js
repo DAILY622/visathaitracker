@@ -509,3 +509,13 @@ firebase.auth().onAuthStateChanged(user => {
     document.getElementById('authMessage').textContent = "📧 Please verify your email before logging in.";
   }
 });
+const adminUIDs = ['YOUR_ADMIN_UID_HERE']; // Replace with your Firebase UID
+if (user.emailVerified) {
+  const isAdmin = adminUIDs.includes(user.uid);
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('welcome').textContent = `👋 Welcome, ${user.email}${isAdmin ? ' (Admin)' : ''}`;
+  if (isAdmin) {
+    document.body.classList.add('admin');
+  }
+}
