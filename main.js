@@ -52,7 +52,8 @@ updateProgress();
 checkbox.addEventListener('change', () => {
   saved[index] = checkbox.checked;
   localStorage.setItem('questsProgress', JSON.stringify(saved));
-  updateProgress(); 
+  updateProgress();
+  checkTM30Reminder();
 });
 
   const icon = questIcons[task] || "📝";
@@ -97,3 +98,19 @@ function updateProgress() {
     }
   }
 }
+function checkTM30Reminder() {
+  const saved = JSON.parse(localStorage.getItem('questsProgress') || '{}');
+  const tm30Index = strings.questsList.findIndex(task =>
+    task.includes('TM30') || task.includes('แจ้งที่พัก')
+  );
+
+  const reminder = document.getElementById('tm30Reminder');
+  if (tm30Index !== -1 && !saved[tm30Index]) {
+    reminder.style.display = 'block';
+  } else {
+    reminder.style.display = 'none';
+  }
+}
+ updateProgress(); 
+});
+checkTM30Reminder();
