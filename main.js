@@ -628,3 +628,34 @@ new Chart(ctx, {
     }
   }
 });
+const cal = new CalHeatmap();
+const dateCounts = {};
+historyData.forEach(entry => {
+  const ts = new Date(entry.date).setHours(0, 0, 0, 0) / 1000;
+  dateCounts[ts] = (dateCounts[ts] || 0) + 1;
+});
+cal.paint({
+  itemSelector: "#cal-heatmap",
+  domain: "month",
+  subDomain: "day",
+  data: { source: dateCounts, type: "json" },
+  range: 3,
+  legend: [1, 2, 3, 5],
+});
+const lastSummary = localStorage.getItem('lastAdminSummary');
+const now = new Date();
+const week = 1000 * 60 * 60 * 24 * 7;
+
+if (isAdmin && (!lastSummary || now - new Date(lastSummary) > week)) {
+  alert("📤 Time to send your weekly TM30 summary!");
+  localStorage.setItem('lastAdminSummary', now.toISOString());
+}
+const overdue = historyData.filter(entry => {
+  const daysSince = (new Date() - new Date(entry.date)) / (1000 * 60 * 60 * 24);
+  return daysSince > 90;
+});
+
+if (overdue.length > 0) {
+  const overdueList = overdue.map(e => `• ${e.label || '—'} (${e.date})`).join('\n');
+  alert(`⚠️ Overdue TM30s:\n${overdueList}`);
+}
