@@ -31,6 +31,20 @@
     messagingSenderId: "YOUR_SENDER_ID",
     appId: "YOUR_APP_ID"
   };
+<div id="deliveryDashboard" class="tabSection">
+  <h3>📦 Visa Delivery Management</h3>
+  <p>Track visa status like packages: submitted, processing, approved, delivered.</p>
+  <ul id="visaDeliveryList"></ul>
+</div>
+<canvas id="switchTrendChart" width="400" height="200"></canvas>
+<div id="appointmentScheduler" class="tabSection">
+  <h3>📅 Schedule Visa Appointment</h3>
+  <input type="date" id="appointmentDate" />
+  <input type="time" id="appointmentTime" />
+  <input type="text" id="appointmentNote" placeholder="Purpose (e.g. Extension)" />
+  <button onclick="saveAppointment()">Save Appointment</button>
+  <ul id="appointmentList"></ul>
+</div>
 <canvas id="adminVisaTrends" width="400" height="200" style="margin-top: 2rem;"></canvas>
 <label><input type="checkbox" id="showArchived" /> Show Archived Visas</label>
 <ul id="visaList"></ul>
