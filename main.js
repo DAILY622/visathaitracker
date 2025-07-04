@@ -738,3 +738,46 @@ if (daysSince > 85 && Notification.permission === 'granted') {
     icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
   });
 }
+const user = firebase.auth().currentUser;
+const db = firebase.firestore();
+const newVisa = {
+  uid: user.uid,
+  type: visaType,
+  expiry: visaExpiry,
+  createdAt: new Date().toISOString()
+};
+
+db.collection("visas").add(newVisa).then(() => {
+  alert("✅ Visa saved to Firestore");
+});
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+document.getElementById('exportVisaPDF')?.addEventListener('click', () => {
+  const visas = JSON.parse(localStorage.getItem('visas') || '[]');
+  if (visas.length === 0) return alert('No visa history to export.');
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  doc.text("Visa History Report", 20, 20);
+
+  visas.forEach((v, i) => {
+    doc.text(`${i + 1}. Type: ${v.type} | Expiry: ${v.expiry}`, 20, 30 + i * 10);
+  });
+
+  doc.save("visa_history.pdf");
+});
+const visaSuggestions = [];
+visas.forEach(v => {
+  const expiry = new Date(v.expiry);
+  const daysLeft = (expiry - new Date()) / (1000 * 60 * 60 * 24);
+  if (daysLeft < 30 && v.type.includes("Tourist")) {
+    visaSuggestions.push("🧠 Consider switching to an Education or Volunteer visa.");
+  }
+  if (daysLeft < 15 && v.type.includes("Non-Immigrant")) {
+    visaSuggestions.push("🧠 Consider applying for a re-entry permit or extension.");
+  }
+});
+
+if (visaSuggestions.length > 0) {
+  alert(visaSuggestions.join('\n'));
+}
