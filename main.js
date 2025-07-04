@@ -366,3 +366,27 @@ document.getElementById('downloadReport')?.addEventListener('click', () => {
   a.click();
   URL.revokeObjectURL(url);
 });
+document.getElementById('emailReport')?.addEventListener('click', () => {
+  const history = JSON.parse(localStorage.getItem('tm30History') || '[]');
+  if (history.length === 0) return alert('No history to email.');
+
+  let report = '';
+  history.forEach((entry, i) => {
+    report += `#${i + 1}\n`;
+    report += `Label: ${entry.label || '—'}\n`;
+    report += `Submission Date: ${entry.date}\n`;
+    report += `Uploaded At: ${entry.uploadedAt}\n`;
+    report += `Notes: ${entry.notes || '—'}\n`;
+    report += `Files:\n${(entry.files || [entry.file]).join('\n')}\n\n`;
+  });
+
+  emailjs.send("service_clpexr7", "template_cxs4zgj", {
+    name: "Visa Tracker",
+    email: "trackervisa304@gmail.com",
+    report: report
+  }).then(() => {
+    alert("✅ Report emailed successfully!");
+  }, () => {
+    alert("❌ Failed to send email.");
+  });
+});
