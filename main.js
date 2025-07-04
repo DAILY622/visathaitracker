@@ -255,7 +255,10 @@ document.getElementById('deleteTM30')?.addEventListener('click', async () => {
   try {
     if ('Notification' in window && Notification.permission === 'granted') {
   new Notification('📅 TM30 Reminder Set', {
-    body: 'We’ll remind you to re-submit in 90 days.',
+    const history = JSON.parse(localStorage.getItem('tm30History') || '[]');
+history.push({ date: submissionDate, uploadedAt: timestamp, file: url });
+localStorage.setItem('tm30History', JSON.stringify(history));
+body: 'We’ll remind you to re-submit in 90 days.',
     icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png'
   });
 }
@@ -293,4 +296,12 @@ ${strings.fileURL}: ${url || 'N/A'}\n
   printWindow.document.write(`<pre>${summary}</pre>`);
   printWindow.document.close();
   printWindow.print();
+});
+const historyList = document.getElementById('historyList');
+const historyData = JSON.parse(localStorage.getItem('tm30History') || '[]');
+historyData.forEach(entry => {
+  const li = document.createElement('li');
+  li.innerHTML = `📅 ${strings.submissionDate}: ${entry.date}<br>🕒 ${strings.uploadedAt}: ${entry.uploadedAt}<br><a href="${entry.file}" target="_blank">🔗 View File</a>`;
+  li.style.marginBottom = '1rem';
+  historyList.appendChild(li);
 });
