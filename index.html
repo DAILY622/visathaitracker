@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.css" />
+Add a live map for GPS tracking?
+
+📆 Sync appointments to Google Calendar?
+
+🧠 Use AI to optimize visa switch timing?<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.css" />
 <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <div id="adminFilters" style="margin-bottom: 1rem;">
@@ -31,6 +35,8 @@
     messagingSenderId: "YOUR_SENDER_ID",
     appId: "YOUR_APP_ID"
   };
+<button onclick="syncToGoogleCalendar()">📆 Add to Google Calendar</button>
+<div id="gpsMap" style="height: 300px; margin-top: 2rem;"></div>
 <div id="deliveryDashboard" class="tabSection">
   <h3>📦 Visa Delivery Management</h3>
   <p>Track visa status like packages: submitted, processing, approved, delivered.</p>
