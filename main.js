@@ -405,6 +405,48 @@ const savedTime = localStorage.getItem('tm30Timestamp');
 if (savedTime) {
   document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${savedTime}`;
 }
+async function biometricLogin() {
+  if (!window.PublicKeyCredential) {
+    alert("❌ Biometric login not supported on this device.");
+    return;
+  }
+
+validateVisaData(text);
+function validateVisaData(text) {
+  const issues = [];
+  if (!text.includes("Thailand")) issues.push("❌ Visa does not mention Thailand.");
+  if (!text.match(/\d{4}-\d{2}-\d{2}/)) issues.push("❌ No valid expiry date found.");
+  if (!text.match(/Tourist|Education|Non-Immigrant/)) issues.push("❌ Visa type not recognized.");
+
+  if (issues.length > 0) {
+    alert("⚠️ Visa validation issues:\n" + issues.join('\n'));
+  } else {
+    alert("✅ Visa document appears valid.");
+  }
+}
+ Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+  document.getElementById('ocrResult').textContent = `🧾 Extracted Text:\n${text}`;
+
+  // Auto-fill visa form fields
+  if (text.includes("Tourist")) document.getElementById('visaSelector').value = "Tourist";
+  const dateMatch = text.match(/\d{4}-\d{2}-\d{2}/);
+  if (dateMatch) document.getElementById('visaDate').value = dateMatch[0];
+});
+ try {
+    const cred = await navigator.credentials.get({
+      publicKey: {
+        challenge: new Uint8Array(32),
+        allowCredentials: [],
+        timeout: 60000,
+        userVerification: "preferred"
+      }
+    });
+    alert("✅ Biometric login successful!");
+    // You can now show the dashboard or trigger Firebase login
+  } catch (err) {
+    alert("❌ Biometric login failed: " + err.message);
+  }
+}
 if (savedTime) {
   document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${savedTime}`;
 
