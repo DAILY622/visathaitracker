@@ -393,3 +393,29 @@ if (!lastSent || new Date(lastSent).getMonth() !== now.getMonth()) {
   alert("📧 It's time to send your monthly TM30 report!");
 }
 localStorage.setItem('lastReportSent', new Date().toISOString());
+function login() {
+  const email = document.getElementById('authEmail').value;
+  const pass = document.getElementById('authPassword').value;
+  firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(() => alert("✅ Logged in"))
+    .catch(err => alert("❌ Login failed: " + err.message));
+}
+
+function signup() {
+  const email = document.getElementById('authEmail').value;
+  const pass = document.getElementById('authPassword').value;
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(() => alert("✅ Account created"))
+    .catch(err => alert("❌ Signup failed: " + err.message));
+}
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('authSection').style.display = 'none';
+    document.getElementById('welcome').textContent = `👋 Welcome, ${user.email}`;
+  } else {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('authSection').style.display = 'block';
+  }
+});
