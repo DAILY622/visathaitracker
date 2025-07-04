@@ -164,3 +164,27 @@ function requestNotificationPermission() {
   }
 }
 requestNotificationPermission();
+function showTab(tabName) {
+  document.querySelectorAll('.tabSection').forEach(section => {
+    section.style.display = 'none';
+  });
+  const active = document.getElementById(`tab-${tabName}`);
+  if (active) active.style.display = 'block';
+}
+.tabBtn {
+  background: #eee;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tabBtn:hover {
+  background: #ddd;
+}
+
+.tabSection {
+  margin-top: 1rem;
+}
