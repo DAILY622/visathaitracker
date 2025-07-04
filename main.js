@@ -659,3 +659,52 @@ if (overdue.length > 0) {
   const overdueList = overdue.map(e => `• ${e.label || '—'} (${e.date})`).join('\n');
   alert(`⚠️ Overdue TM30s:\n${overdueList}`);
 }
+const visaTypes = JSON.parse(localStorage.getItem('visaTypes') || '[]');
+const typeCounts = {};
+visaTypes.forEach(type => {
+  typeCounts[type] = (typeCounts[type] || 0) + 1;
+});
+
+const ctx2 = document.getElementById('visaTypeChart').getContext('2d');
+new Chart(ctx2, {
+  type: 'pie',
+  data: {
+    labels: Object.keys(typeCounts),
+    datasets: [{
+      label: 'Visa Types',
+      data: Object.values(typeCounts),
+      backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#e91e63']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      title: { display: true, text: '📈 Visa Type Distribution' }
+    }
+  }
+});
+if (overdue.length > 0) {
+  const overdueList = overdue.map(e => `• ${e.label || '—'} (${e.date})`).join('\n');
+  const userEmail = document.getElementById('userEmail')?.value || firebase.auth().currentUser?.email;
+
+  emailjs.send("service_clpexr7", "template_cxs4zgj", {
+    name: "Visa Tracker",
+    email: userEmail,
+    report: `⚠️ Overdue TM30s:\n${overdueList}`
+  });
+}
+const suggestions = [];
+const lastEntry = historyData[historyData.length - 1];
+if (lastEntry) {
+  const daysSince = (new Date() - new Date(lastEntry.date)) / (1000 * 60 * 60 * 24);
+  if (daysSince > 80 && daysSince < 90) {
+    suggestions.push("🧠 Suggestion: Prepare for 90-day report soon.");
+  }
+  if (daysSince > 180) {
+    suggestions.push("🧠 Suggestion: Consider visa extension or re-entry permit.");
+  }
+}
+
+if (suggestions.length > 0) {
+  alert(suggestions.join('\n'));
+}
