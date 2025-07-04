@@ -116,7 +116,17 @@ input[type="date"] {
 </head>
 <audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
 <body>
-  <div id="dashboard" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
+  <div id="authSection" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
+  <h2>🔐 Login to Access Dashboard</h2>
+  <input type="email" id="authEmail" placeholder="Email" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;" /><br>
+  <input type="password" id="authPassword" placeholder="Password" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;" /><br>
+  <button onclick="login()" style="margin-right: 0.5rem;">Login</button>
+  <button onclick="signup()">Sign Up</button>
+</div>
+<div id="dashboard" style="display: none;">
+  <!-- Your existing dashboard content -->
+</div>
+<div id="dashboard" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
     <h1 id="welcome"></h1>
     <nav id="navTabs" style="margin-bottom: 1rem;">
   <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
