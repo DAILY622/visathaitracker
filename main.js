@@ -200,3 +200,5 @@ document.getElementById('tm30Form')?.addEventListener('submit', function (e) {
 });
 const lastTab = localStorage.getItem('activeTab') || 'checklist';
 showTab(lastTab);
+const lastTab = localStorage.getItem('activeTab') || 'checklist';
+showTab(lastTab);
