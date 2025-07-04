@@ -392,6 +392,15 @@ const now = new Date();
 if (!lastSent || new Date(lastSent).getMonth() !== now.getMonth()) {
   alert("📧 It's time to send your monthly TM30 report!");
 }
+const db = firebase.firestore();
+db.collection("tm30").add({
+  uid: uid,
+  label: label,
+  date: submissionDate,
+  uploadedAt: timestamp,
+  file: url,
+  notes: notes
+});
 localStorage.setItem('lastReportSent', new Date().toISOString());
 function login() {
   const email = document.getElementById('authEmail').value;
