@@ -116,16 +116,25 @@ function checkTM30Reminder() {
 checkTM30Reminder();
 
   function showVisaCountdown() {
-  // Set your visa expiration date here (YYYY-MM-DD)
-  const expirationDate = new Date('2025-08-15');
+  const storedDate = localStorage.getItem('visaExpirationDate');
+  const expirationDate = storedDate ? new Date(storedDate) : null;
   const today = new Date();
-  const diffTime = expirationDate - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
   const daysLeftEl = document.getElementById('daysLeft');
-  if (daysLeftEl) {
+  const dateInput = document.getElementById('visaDate');
+
+  if (expirationDate) {
+    const diffTime = expirationDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     daysLeftEl.textContent = diffDays >= 0 ? diffDays : 'Expired';
+    dateInput.value = expirationDate.toISOString().split('T')[0];
+  } else {
+    daysLeftEl.textContent = '--';
   }
+
+  dateInput.addEventListener('change', () => {
+    localStorage.setItem('visaExpirationDate', dateInput.value);
+    showVisaCountdown(); // refresh countdown
+  });
 }
 showVisaCountdown();
-
