@@ -26,6 +26,36 @@ firebase.firestore().collection("visas").get().then(snapshot => {
     typeCounts[type] = (typeCounts[type] || 0) + 1;
   });
 
+const visaType = classifyVisaType(text);
+document.getElementById('visaSelector').value = visaType;
+function classifyVisaType(text) {
+  if (/tourist/i.test(text)) return "Tourist";
+  if (/education|student/i.test(text)) return "Education";
+  if (/non[- ]immigrant/i.test(text)) return "Non-Immigrant";
+  if (/volunteer/i.test(text)) return "Volunteer";
+  return "Unknown";
+}
+const adminUIDs = ['YOUR_ADMIN_UID_HERE']; // already defined
+const user = firebase.auth().currentUser;
+
+if (adminUIDs.includes(user?.uid)) {
+  // Allow biometric credential registration
+  async function biometricLogin() {
+    // existing biometric logic here
+  }
+} else {
+  document.getElementById('biometricBtn').disabled = true;
+  document.getElementById('biometricBtn').title = "Admins only";
+}
+document.getElementById('cameraCapture')?.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+    document.getElementById('cameraOCRResult').textContent = `📸 OCR Result:\n${text}`;
+    validateVisaData(text); // reuse your existing AI validator
+  });
+});
+
 const map = L.map('gpsMap').setView([13.7563, 100.5018], 4); // Bangkok
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
