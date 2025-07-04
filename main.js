@@ -708,3 +708,33 @@ if (lastEntry) {
 if (suggestions.length > 0) {
   alert(suggestions.join('\n'));
 }
+const visaEvents = JSON.parse(localStorage.getItem('visaEvents') || '[]');
+const timelineList = document.getElementById('timelineList');
+visaEvents.forEach(event => {
+  const li = document.createElement('li');
+  li.innerHTML = `📌 <strong>${event.date}</strong>: ${event.label}`;
+  timelineList.appendChild(li);
+});
+const visas = JSON.parse(localStorage.getItem('visas') || '[]');
+const selector = document.getElementById('visaSelector');
+visas.forEach((v, i) => {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = `${v.type} (${v.expiry})`;
+  selector.appendChild(opt);
+});
+
+selector.addEventListener('change', () => {
+  const selectedVisa = visas[selector.value];
+  document.getElementById('visaDate').value = selectedVisa.expiry;
+  document.getElementById('visaHeader').textContent = `🛂 ${selectedVisa.type}`;
+});
+if (Notification.permission !== 'granted') {
+  Notification.requestPermission();
+}
+if (daysSince > 85 && Notification.permission === 'granted') {
+  new Notification("⚠️ Visa Expiry Alert", {
+    body: `Your ${selectedVisa.type} visa expires in ${Math.round(90 - daysSince)} days.`,
+    icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
+  });
+}
