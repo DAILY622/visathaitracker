@@ -224,10 +224,26 @@ const savedURL = localStorage.getItem('tm30URL');
 if (savedURL) {
   document.getElementById('tm30Link').href = savedURL;
   document.getElementById('tm30Preview').style.display = 'block';
+document.getElementById('downloadTM30').href = savedURL;
 }
 const savedTime = localStorage.getItem('tm30Timestamp');
 if (savedTime) {
   document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${savedTime}`;
+}
+if (savedTime) {
+  document.getElementById('tm30Time').textContent = `${strings.lastUploaded}: ${savedTime}`;
+
+  const lastDate = new Date(savedTime);
+  const now = new Date();
+  const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+
+  if (diffDays >= 90) {
+    const reminder = document.createElement('p');
+    reminder.textContent = '🔔 It’s been over 90 days. Please re-submit your TM30.';
+    reminder.style.color = 'red';
+    reminder.style.fontWeight = 'bold';
+    document.getElementById('tm30Preview').appendChild(reminder);
+  }
 }
 document.getElementById('deleteTM30')?.addEventListener('click', async () => {
   const url = localStorage.getItem('tm30URL');
@@ -246,9 +262,27 @@ document.getElementById('deleteTM30')?.addEventListener('click', async () => {
     document.getElementById('tm30Status').textContent = strings.deleteSuccess;
     document.getElementById('tm30Status').style.color = 'gray';
     document.getElementById('tm30Status').style.display = 'block';
-  } catch (err) {
+ } catch (err) {
     document.getElementById('tm30Status').textContent = strings.deleteFail;
     document.getElementById('tm30Status').style.color = 'red';
     document.getElementById('tm30Status').style.display = 'block';
   }
+});
+document.getElementById('printTM30')?.addEventListener('click', () => {
+  const url = localStorage.getItem('tm30URL');
+  const date = localStorage.getItem('tm30Date');
+  const time = localStorage.getItem('tm30Timestamp');
+
+  const summary = `
+    TM30 Submission Summary\n
+    ----------------------------\n
+    Submission Date: ${date || 'N/A'}\n
+    Uploaded At: ${time || 'N/A'}\n
+    File URL: ${url || 'N/A'}\n
+  `;
+
+  const printWindow = window.open('', '', 'width=600,height=400');
+  printWindow.document.write(`<pre>${summary}</pre>`);
+  printWindow.document.close();
+  printWindow.print();
 });
