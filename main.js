@@ -19,6 +19,59 @@ document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
 document.getElementById('profileEmail').textContent = `📧 Email: ${user.email}`;
 document.getElementById('profileUID').textContent = `🆔 UID: ${user.uid}`;
 
+document.getElementById('passportUpload')?.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+const scores = classifyVisaWithConfidence(text);
+const ctx = document.getElementById('visaConfidenceChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: Object.keys(scores),
+    datasets: [{
+      label: 'Visa Type Confidence',
+      data: Object.values(scores),
+      backgroundColor: '#4caf50'
+    }]
+  },
+  options: {
+    plugins: {
+      title: { display: true, text: '🧠 AI Visa Type Prediction Confidence' }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 1 }
+    }
+  }
+});
+function classifyVisaWithConfidence(text) {
+  const scores = {
+    Tourist: /tourist/i.test(text) ? 0.9 : 0.1,
+    Education: /education|student/i.test(text) ? 0.85 : 0.1,
+    "Non-Immigrant": /non[- ]immigrant/i.test(text) ? 0.8 : 0.1,
+    Volunteer: /volunteer/i.test(text) ? 0.75 : 0.1
+  };
+  return scores;
+}
+ if (adminUIDs.includes(firebase.auth().currentUser?.uid)) {
+  const db = firebase.firestore();
+  db.collection("biometricLogs").add({
+    uid: firebase.auth().currentUser.uid,
+    timestamp: new Date().toISOString(),
+    action: "Biometric login"
+  });
+}
+ Tesseract.recognize(file, 'eng').then(({ data: { text } }) => {
+    document.getElementById('passportOCRResult').textContent = `🛂 Passport OCR:\n${text}`;
+
+    // Auto-fill name and passport number
+    const nameMatch = text.match(/Name[:\s]+([A-Z\s]+)/i);
+    const passportMatch = text.match(/Passport No[:\s]+([A-Z0-9]+)/i);
+
+    if (nameMatch) document.getElementById('fullName')?.value = nameMatch[1].trim();
+    if (passportMatch) document.getElementById('passportNumber')?.value = passportMatch[1].trim();
+  });
+});
 firebase.firestore().collection("visas").get().then(snapshot => {
   const typeCounts = {};
   snapshot.forEach(doc => {
