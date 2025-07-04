@@ -26,6 +26,48 @@ firebase.firestore().collection("visas").get().then(snapshot => {
     typeCounts[type] = (typeCounts[type] || 0) + 1;
   });
 
+const map = L.map('gpsMap').setView([13.7563, 100.5018], 4); // Bangkok
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+const trail = [
+  { lat: 13.7563, lng: 100.5018, label: "Bangkok" },
+  { lat: 25.276987, lng: 55.296249, label: "Dubai" },
+  { lat: 51.5074, lng: -0.1278, label: "London" }
+];
+
+visas.forEach(v => {
+  const expiry = new Date(v.expiry);
+  const daysLeft = (expiry - new Date()) / (1000 * 60 * 60 * 24);
+
+  if (v.type === "Tourist" && daysLeft < 45 && daysLeft > 30) {
+    visaSuggestions.push("🧠 Optimal time to switch to Education visa is now (30–45 days before expiry).");
+  }
+
+  if (v.type === "Non-Immigrant" && daysLeft < 20 && daysLeft > 10) {
+    visaSuggestions.push("🧠 Consider applying for extension or re-entry permit within the next 10 days.");
+  }
+});
+function syncToGoogleCalendar() {
+  const date = document.getElementById('appointmentDate').value;
+  const time = document.getElementById('appointmentTime').value;
+  const note = document.getElementById('appointmentNote').value;
+
+  const start = new Date(`${date}T${time}`);
+  const end = new Date(start.getTime() + 30 * 60000); // 30 min later
+
+  const format = d => d.toISOString().replace(/-|:|\.\d+/g, '');
+  const link = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(note)}&dates=${format(start)}/${format(end)}&details=Visa+Appointment`;
+
+  window.open(link, '_blank');
+}
+let marker = L.marker([trail[0].lat, trail[0].lng]).addTo(map).bindPopup("Starting in Bangkok").openPopup();
+
+trail.forEach((point, i) => {
+  setTimeout(() => {
+    marker.setLatLng([point.lat, point.lng]).setPopupContent(`✈️ ${point.label}`).openPopup();
+    map.setView([point.lat, point.lng], 5);
+  }, i * 3000);
+});
  const visaFees = {
   "Tourist → Education": 80,
   "Tourist → Volunteer": 60,
