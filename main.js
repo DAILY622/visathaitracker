@@ -519,3 +519,26 @@ if (user.emailVerified) {
     document.body.classList.add('admin');
   }
 }
+document.getElementById('totalSubmissions').textContent = `Total Submissions: ${historyData.length}`;
+if (historyData.length > 0) {
+  const last = historyData[historyData.length - 1];
+  document.getElementById('lastSubmission').textContent = `Last Submission: ${last.date}`;
+}
+const docRef = await firebase.firestore().collection("tm30").add({
+  uid: uid,
+  label: label,
+  date: submissionDate,
+  uploadedAt: timestamp,
+  file: url,
+  notes: notes
+});
+console.log("Saved with ID:", docRef.id);
+// To delete
+firebase.firestore().collection("tm30").doc(docId).delete();
+
+// To update
+firebase.firestore().collection("tm30").doc(docId).update({
+  label: "Updated Label",
+  notes: "Updated Notes"
+});
+Add role-based access, TM30 analytics, and Firestore edit/delete
