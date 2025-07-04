@@ -13,11 +13,14 @@ Add a live map for GPS tracking?
   <input type="date" id="filterDate" />
   <button onclick="filterAdminData()">🔍 Filter</button>
 </div>
+<input type="file" id="passportUpload" accept="image/*" />
+<pre id="passportOCRResult"></pre>
 <canvas id="visaTypeChart" width="400" height="200" style="margin-top: 2rem;"></canvas>
 <canvas id="tm30Chart" width="400" height="200" style="margin-top: 2rem;"></canvas>
 <label for="userEmail">📧 Your Email Address:</label><br>
 <input type="email" id="userEmail" placeholder="you@example.com" required /><br><br>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<canvas id="visaConfidenceChart" width="400" height="200" style="margin-top: 2rem;"></canvas>
 <script>
  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
  emailjs.init("cnap3dqTYs5cjd4Uy");
