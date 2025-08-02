@@ -1,25 +1,8 @@
-<h1 id="welcome"></h1>
-
-<div class="button-group">
-  <button id="loginBtn"></button>
-  <button id="logoutBtn"></button>
-  <button id="profileBtn"></button>
-  <button id="questsBtn"></button>
-  <button id="rewardsBtn"></button>
-</div>
-
-<br /><br />
-<label for="lang">🌐 Language:</label>
-<select id="lang" onchange="switchLang(this.value)">
-  <option value="en">🇬🇧 English</option>
-  <option value="th">🇹🇭 ภาษาไทย</option>
-</select>
-
-<script type="module" src="main.js"></script>
-
 # VisaTracker Thailand 🇹🇭
+
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-  📘 ภาษาไทย: [ดู README ภาษาไทย](README.th.md)
+
+📘 ภาษาไทย: [ดู README ภาษาไทย](README.th.md)
 
 Localized version of [VisaTracker](https://github.com/yourusername/visatracker) tailored for Thai users.
 
@@ -29,28 +12,31 @@ Localized version of [VisaTracker](https://github.com/yourusername/visatracker) 
 - Localized quests and rewards
 - Region-specific visa tracking tools
 - Mobile-friendly UI
+- 👋 Hello functionality for basic greetings
 
 ## 🛠 Tech Stack
 
-- Node.js + Express
-- MongoDB Atlas
-- Socket.IO
-- Flutter (optional for mobile)
+- HTML/CSS/JavaScript (Frontend)
+- Progressive Web App (PWA)
+- Chart.js for visualizations
+- Multi-language support
 
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/yourusername/visathaitracker.git
+git clone https://github.com/DAILY622/visathaitracker.git
 cd visathaitracker
-npm install
-npm run dev
+# Open index.html in your browser or serve with any HTTP server
+python3 -m http.server 8000
+```
 
+## ✨ Recent Updates
+
+- 🔧 Fixed syntax errors in language files
+- 🏗️ Cleaned up HTML structure
+- 👋 Added hello button and functionality
+- 🌐 Improved multi-language support
 
 ---
 
-Would you like me to:
-- Generate Thai language translations for your UI?
-- Add region-specific quests or visa types?
-- Help you deploy this version separately from the global one?
-
-Let’s localize VisaTracker for Thailand! 🇹🇭
+Let's localize VisaTracker for Thailand! 🇹🇭
