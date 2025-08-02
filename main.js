@@ -5,6 +5,7 @@ const lang = localStorage.getItem('lang') || 'en';
 const strings = lang === 'th' ? th : en;
 
 document.getElementById('welcome').textContent = strings.welcome;
+document.getElementById('helloBtn').textContent = strings.hello.split('!')[0]; // Just "Hello" part
 document.getElementById('loginBtn').textContent = strings.login;
 
 window.switchLang = function (lang) {
@@ -15,9 +16,22 @@ document.getElementById('logoutBtn').textContent = strings.logout;
 document.getElementById('profileBtn').textContent = strings.profile;
 document.getElementById('questsBtn').textContent = strings.quests;
 document.getElementById('rewardsBtn').textContent = strings.rewards;
-document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
-document.getElementById('profileEmail').textContent = `📧 Email: ${user.email}`;
-document.getElementById('profileUID').textContent = `🆔 UID: ${user.uid}`;
+
+// Add hello button functionality
+document.getElementById('helloBtn').addEventListener('click', () => {
+  alert(strings.hello);
+});
+
+// Handle elements that might not exist yet
+if (document.getElementById('visaHeader')) {
+  document.getElementById('visaHeader').textContent = strings.visaTypesHeader;
+}
+if (document.getElementById('profileEmail') && typeof user !== 'undefined') {
+  document.getElementById('profileEmail').textContent = `📧 Email: ${user.email}`;
+}
+if (document.getElementById('profileUID') && typeof user !== 'undefined') {
+  document.getElementById('profileUID').textContent = `🆔 UID: ${user.uid}`;
+}
 
 document.getElementById('passportUpload')?.addEventListener('change', e => {
   const file = e.target.files[0];

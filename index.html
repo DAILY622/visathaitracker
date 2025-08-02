@@ -1,395 +1,225 @@
-<section id="landing" style="padding: 2rem; max-width: 800px; margin: auto; font-family: sans-serif;">
-  <h1 style="font-size: 2.5rem;">🇹🇭 VisaTracker Thailand</h1>
-  <p style="font-size: 1.2rem;">Your personal visa and TM30 companion — powered by AI, OCR, and Firebase.</p>
-
-  <ul style="line-height: 1.8;">
-    <li>✅ Track visa expiry, TM30, and 90-day reports</li>
-    <li>📤 Upload and scan visa documents with OCR</li>
-    <li>🧠 Get AI-powered reminders and visa suggestions</li>
-    <li>📅 Schedule appointments and sync to Google Calendar</li>
-    <li>🔐 Use biometric login and install as a mobile app</li>
-    <li>📦 Visualize your visa journey like a delivery dashboard</li>
-    <li>📊 Admins: monitor trends, audit biometric access, and more</li>
-  </ul>
-
-  <a href="https://visatrack.pro" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #4caf50; color: white; text-decoration: none; border-radius: 5px;">🚀 Try VisaTracker Now</a>
-</section>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="presskit/favicon.png" type="image/png">
-<meta name="theme-color" content="#1a73e8">
-Add a live map for GPS tracking?
-
-📆 Sync appointments to Google Calendar?
-
-🧠 Use AI to optimize visa switch timing?<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.css" />
-<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <div id="adminFilters" style="margin-bottom: 1rem;">
-  <input type="text" id="filterUID" placeholder="Filter by UID" />
-  <input type="date" id="filterDate" />
-  <button onclick="filterAdminData()">🔍 Filter</button>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(reg => console.log('✅ Service Worker registered:', reg.scope))
-      .catch(err => console.error('❌ Service Worker registration failed:', err));
-  }
-</script>
-<link rel="apple-touch-icon" href="presskit/icon-512.png">
-</div>
-<input type="file" id="passportUpload" accept="image/*" />
-<pre id="passportOCRResult"></pre>
-<canvas id="visaTypeChart" width="400" height="200" style="margin-top: 2rem;"></canvas>
-<canvas id="tm30Chart" width="400" height="200" style="margin-top: 2rem;"></canvas>
-<label for="userEmail">📧 Your Email Address:</label><br>
-<input type="email" id="userEmail" placeholder="you@example.com" required /><br><br>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<canvas id="visaConfidenceChart" width="400" height="200" style="margin-top: 2rem;"></canvas>
-<script>
- <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
- emailjs.init("cnap3dqTYs5cjd4Uy");
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<button id="emailReport" style="margin-top: 0.5rem;">📧 Email TM30 Report</button>
-</script>
- <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "visathaitracking.firebaseapp.com",
-    projectId: "visathaitracking",
-    storageBucket: "visathaitracking.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
-<input type="file" id="cameraCapture" accept="image/*" capture="environment" />
-<pre id="cameraOCRResult"></pre>
-<button onclick="syncToGoogleCalendar()">📆 Add to Google Calendar</button>
-<div id="gpsMap" style="height: 300px; margin-top: 2rem;"></div>
-<div id="deliveryDashboard" class="tabSection">
-  <h3>📦 Visa Delivery Management</h3>
-  <p>Track visa status like packages: submitted, processing, approved, delivered.</p>
-  <ul id="visaDeliveryList"></ul>
-</div>
-<canvas id="switchTrendChart" width="400" height="200"></canvas>
-<div id="appointmentScheduler" class="tabSection">
-  <h3>📅 Schedule Visa Appointment</h3>
-  <input type="date" id="appointmentDate" />
-  <input type="time" id="appointmentTime" />
-  <input type="text" id="appointmentNote" placeholder="Purpose (e.g. Extension)" />
-  <button onclick="saveAppointment()">Save Appointment</button>
-  <ul id="appointmentList"></ul>
-</div>
-<canvas id="adminVisaTrends" width="400" height="200" style="margin-top: 2rem;"></canvas>
-<label><input type="checkbox" id="showArchived" /> Show Archived Visas</label>
-<ul id="visaList"></ul>
- 📅 Add a visa renewal scheduler?
-
-🔐 Let users archive expired visas?
-
-📊 Show visa trends across all users (admin-only)? firebase.initializeApp(firebaseConfig);
-  const storage = firebase.storage();
-</script>
-<style>
-#dashboard {
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-}
-input[type="date"] {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 0.5rem;
-}
-@media (max-width: 600px) {
-  input[type="date"] {
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 0.75rem;
-  }
-
-  #visaCountdown {
-    font-size: 1.1rem;
-  }
-  input[type="date"]:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
- #progressBar[value] {
-    appearance: none;
-    -webkit-appearance: none;
-  }
-    @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-#visaWarning.pulse {
-  animation: pulse 1s infinite;
-}
-
-
-  #progressBar::-webkit-progress-bar {
-    background-color: #eee;
-    border-radius: 10px;
-  }
-
-  #progressBar::-webkit-progress-value {
-    background-color: #007bff;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-  }
-
-  #progressBar.full::-webkit-progress-value {
-    background-color: #28a745; /* Green when full */
-  }
-</style>
-<meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VisaTracker Thailand</title>
-<script type="module">
- <div id="tm30Preview" style="margin-top: 1rem; display: none;">
-  <button id="printTM30" style="margin-top: 0.5rem;">🧾 Print TM30 Summary</button>
-<button id="exportVisaPDF">📤 Export Visa History (PDF)</button>
-<h3>📄 Uploaded TM30 File:</h3>
-  <a id="tm30Link" href="#" target="_blank">View uploaded file</a>
-<br>
-<a id="downloadTM30" href="#" download style="margin-top: 0.5rem; display: inline-block;">⬇️ Download File</a>
-</div>
-<div id="tm30Stats" style="margin-top: 1rem;">
-  <h3>📊 TM30 Analytics</h3>
-  <p id="totalSubmissions"></p>
-  <p id="lastSubmission"></p>
-</div>
- // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAtYl9L2eWF3RWXqgZjJ7WgYuNsqGGMqpk",
-    authDomain: "visathaitracking.firebaseapp.com",
-    projectId: "visathaitracking",
-    storageBucket: "visathaitracking.firebasestorage.app",
-    messagingSenderId: "773532291684",
-    appId: "1:773532291684:web:dca617af952b0f09be8571",
-    measurementId: "G-SDSEGV8TT0"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="presskit/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="presskit/icon-512.png">
+  <meta name="theme-color" content="#1a73e8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.css" />
+  <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.0.0/cal-heatmap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      margin: 0; 
+      padding: 2rem; 
+      max-width: 800px; 
+      margin: auto; 
+    }
+    .button-group { 
+      margin: 1rem 0; 
+    }
+    .button-group button { 
+      margin: 0.5rem; 
+      padding: 0.5rem 1rem; 
+    }
+    .tabSection {
+      margin-top: 2rem;
+    }
+    .tabBtn {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: 1px solid #ccc;
+      background: #f8f9fa;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .tabBtn.active {
+      background: #007bff;
+      color: white;
+    }
+    input[type="date"], input[type="email"], input[type="text"], textarea, select {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin: 0.25rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+  </style>
 </head>
-<audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
 <body>
-  <div id="authSection" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
-  <h2>🔐 Login to Access Dashboard</h2>
-  <input type="email" id="authEmail" placeholder="Email" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;" /><br>
-  <input type="password" id="authPassword" placeholder="Password" style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;" /><br>
-  <button onclick="login()" style="margin-right: 0.5rem;">Login</button>
-  <button onclick="signup()">Sign Up</button>
-<button onclick="resetPassword()">Forgot Password?</button>
-<p id="authMessage" style="color: red; margin-top: 0.5rem;"></p>
-</div>
-<div id="adminPanel" style="display: none; margin-top: 2rem;">
-  <h3>🗂️ Admin: All TM30 Submissions</h3>
-  <ul id="adminFirestoreList" style="padding-left: 1rem;"></ul>
-</div>
-<div id="dashboard" style="display: none;">
-  <!-- Your existing dashboard content -->
-<div id="tm30Heatmap" style="margin-top: 2rem;">
-  <h3>📆 TM30 Submission Calendar</h3>
-  <div id="cal-heatmap"></div>
-</div>
-<div id="userProfile" style="margin-top: 1rem;">
-  <h3>👤 Your Profile</h3>
-  <p id="profileEmail"></p>
-  <p id="profileUID"></p>
-</div>
-</div>
-<div id="dashboard" style="max-width: 600px; margin: auto; padding: 1rem; font-family: sans-serif;">
-    <h1 id="welcome"></h1>
-    <nav id="navTabs" style="margin-bottom: 1rem;">
-  <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
-  <button class="tabBtn" onclick="showTab('countdown')">⏳ Countdown</button>
-  <button class="tabBtn" onclick="showTab('tm30')">🧾 TM30</button>
-  <button class="tabBtn" onclick="showTab('visaTypes')">📅 Visa Types</button>
-</nav>
-<button onclick="firebase.auth().signOut()">🚪 Logout</button>
-<button id="loginBtn"></button>
-
- <label for="visaSelector">🧾 Select Visa:</label>
-<select id="visaSelector"></select>
-  <div id="visaTimeline" style="margin-top: 2rem;">
-  <h3>📅 Visa Timeline</h3>
-  <ul id="timelineList" style="list-style: none; padding-left: 0;"></ul>
-</div>
- <br /><br />
-    <label for="lang">🌐 Language:</label>
-    <select id="lang" onchange="switchLang(this.value)">
-      <option value="en">🇬🇧 English</option>
-      <option value="th">🇹🇭 ภาษาไทย</option>
-    </select>
-
-    <h2 id="visaHeader"></h2>
-    <ul id="visaList"></ul>
-
-    <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
-      ⏳ Visa expires in: <span id="daysLeft">--</span> days
-      <br>
-      <label for="visaDate">📅 Set your visa expiration date:</label>
-      <input type="date" id="visaDate" />
+  <div id="app">
+    <h1 id="welcome">🇹🇭 Welcome to VisaTracker Thailand</h1>
+    
+    <div class="button-group">
+      <button id="helloBtn">👋 Hello</button>
+      <button id="loginBtn">Login</button>
+      <button id="logoutBtn">Logout</button>
+      <button id="profileBtn">Profile</button>
+      <button id="questsBtn">Quests</button>
+      <button id="rewardsBtn">Rewards</button>
     </div>
 
-    <div id="visaWarning" style="color: red; font-weight: bold; display: none;">
-      ⚠️ Your visa is about to expire! Please take action.
+    <div style="margin: 1rem 0;">
+      <label for="lang">🌐 Language:</label>
+      <select id="lang" onchange="switchLang(this.value)">
+        <option value="en">🇬🇧 English</option>
+        <option value="th">🇹🇭 ภาษาไทย</option>
+      </select>
     </div>
 
-    <div id="progressContainer" style="margin: 1rem 0;">
-      <label id="progressLabel" for="progressBar">Progress:</label>
-      <progress id="progressBar" value="0" max="100" style="width: 100%; height: 20px;"></progress>
+    <nav id="navTabs" style="margin: 1rem 0;">
+      <button class="tabBtn active" onclick="showTab('home')">🏠 Home</button>
+      <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
+      <button class="tabBtn" onclick="showTab('countdown')">⏳ Countdown</button>
+      <button class="tabBtn" onclick="showTab('tm30')">🧾 TM30</button>
+      <button class="tabBtn" onclick="showTab('visaTypes')">📅 Visa Types</button>
+    </nav>
+
+    <!-- Home Tab -->
+    <div id="tab-home" class="tabSection">
+      <p>Your personal visa and TM30 companion — powered by AI, OCR, and Firebase.</p>
+      <ul style="line-height: 1.8;">
+        <li>✅ Track visa expiry, TM30, and 90-day reports</li>
+        <li>📤 Upload and scan visa documents with OCR</li>
+        <li>🧠 Get AI-powered reminders and visa suggestions</li>
+        <li>📅 Schedule appointments and sync to Google Calendar</li>
+        <li>🔐 Use biometric login and install as a mobile app</li>
+        <li>📦 Visualize your visa journey like a delivery dashboard</li>
+      </ul>
+      
+      <div id="profileEmail"></div>
+      <div id="profileUID"></div>
     </div>
 
-    <h2 id="questsHeader"></h2>
-    <ul id="questsList"></ul>
+    <!-- Checklist Tab -->
+    <div id="tab-checklist" class="tabSection" style="display: none;">
+      <h2 id="questsHeader">Visa Checklist</h2>
+      <ul id="questsList"></ul>
+    </div>
 
-    <div id="tm30Reminder" style="margin-top: 1rem; color: red; font-weight: bold; display: none;">
-      ⚠️ Don’t forget to submit your TM30!
+    <!-- Countdown Tab -->
+    <div id="tab-countdown" class="tabSection" style="display: none;">
+      <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
+        ⏳ Visa expires in: <span id="daysLeft">--</span> days
+        <br><br>
+        <label for="visaDate">📅 Set your visa expiration date:</label>
+        <input type="date" id="visaDate" />
+      </div>
+      
+      <div id="visaWarning" style="color: red; font-weight: bold; display: none; margin-top: 1rem;">
+        ⚠️ Your visa is about to expire! Please take action.
+      </div>
+    </div>
+
+    <!-- TM30 Tab -->
+    <div id="tab-tm30" class="tabSection" style="display: none;">
+      <h2>🧾 Upload TM30 Form</h2>
+      <form id="tm30Form">
+        <label for="tm30File">Choose your TM30 PDF or image:</label><br>
+        <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
+        
+        <label for="tm30Date">📅 Submission Date:</label><br>
+        <input type="date" id="tm30Date" required /><br><br>
+        
+        <label for="tm30Notes">📝 Notes (optional):</label><br>
+        <textarea id="tm30Notes" rows="3" placeholder="e.g. Submitted at Chiang Mai Immigration Office"></textarea><br><br>
+        
+        <button type="submit">Upload</button>
+      </form>
+      <p id="tm30Status" style="color: green; display: none;">✅ TM30 uploaded successfully!</p>
+    </div>
+
+    <!-- Visa Types Tab -->
+    <div id="tab-visaTypes" class="tabSection" style="display: none;">
+      <h2 id="visaHeader">📅 Visa Types in Thailand</h2>
+      <ul id="visaList"></ul>
+      
+      <h3>📊 Visa Comparison</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Visa Type</th>
+            <th>Duration</th>
+            <th>Extension</th>
+            <th>Cost (THB)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tourist (TR)</td>
+            <td>60 days</td>
+            <td>+30 days</td>
+            <td>1,900</td>
+          </tr>
+          <tr>
+            <td>Education (ED)</td>
+            <td>90 days</td>
+            <td>Renewable</td>
+            <td>2,000+</td>
+          </tr>
+          <tr>
+            <td>Non-O</td>
+            <td>90 days</td>
+            <td>1 year</td>
+            <td>1,900</td>
+          </tr>
+          <tr>
+            <td>Non-B</td>
+            <td>90 days</td>
+            <td>1 year</td>
+            <td>2,000+</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <audio id="warningSound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3" preload="auto"></audio>
+  <script>
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+        .catch(err => console.error('❌ Service Worker registration failed:', err));
+    }
+
+    // Tab switching functionality
+    window.showTab = function(tabName) {
+      // Hide all tabs
+      const tabs = document.querySelectorAll('.tabSection');
+      tabs.forEach(tab => tab.style.display = 'none');
+      
+      // Remove active class from all buttons
+      const buttons = document.querySelectorAll('.tabBtn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      // Show selected tab
+      const selectedTab = document.getElementById('tab-' + tabName);
+      if (selectedTab) {
+        selectedTab.style.display = 'block';
+      }
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+    };
+  </script>
   <script type="module" src="main.js"></script>
 </body>
-<nav id="navTabs" style="margin-bottom: 1rem;">
-  <button class="tabBtn" onclick="showTab('checklist')">✅ Checklist</button>
-  <button class="tabBtn" onclick="showTab('countdown')">⏳ Countdown</button>
-  <button class="tabBtn" onclick="showTab('tm30')">🧾 TM30</button>
-  <button class="tabBtn" onclick="showTab('visaTypes')">📅 Visa Types</button>
-</nav>
-
-<div id="tab-checklist" class="tabSection">
- <div id="tab-visaTypes" class="tabSection" style="display: none;">
-  <h2>📅 Visa Types in Thailand</h2>
-  
-<div id="tm30History" style="margin-top: 1.5rem;">
-  <h3>📚 Submission History</h3>
-  <ul id="historyList" style="padding-left: 1rem;"></ul>
-<button id="clearHistory" style="margin-top: 0.5rem;">🧹 Clear History</button>
-<button id="exportCSV" style="margin-top: 0.5rem;">📤 Export to CSV</button>
-</div><ul style="line-height: 1.8;">
-  <li>🧳 <strong><a href="https://www.immigration.go.th/en/?page_id=1772" target="_blank">Tourist Visa (TR)</a>:</strong> 60 days + 30-day extension</li>
-  <li>🎓 <strong><a href="https://www.immigration.go.th/en/?page_id=1774" target="_blank">Education Visa (ED)</a>:</strong> For students enrolled in Thai institutions</li>
-  <li>👨‍👩‍👧 <strong><a href="https://www.immigration.go.th/en/?page_id=1776" target="_blank">Non-Immigrant O</a>:</strong> For family, retirement, or volunteering</li>
-  <li>💼 <strong><a href="https://www.immigration.go.th/en/?page_id=1778" target="_blank">Non-Immigrant B</a>:</strong> For business or employment</li>
-</ul>
-<div id="tm30Calendar" style="margin-top: 1.5rem;">
-  <h3>📅 TM30 Calendar</h3>
-  <ul id="calendarList" style="padding-left: 1rem;"></ul>
-</div>
-<h3>📊 Visa Comparison</h3>
-<table style="width: 100%; border-collapse: collapse;">
-  <thead>
-    <tr style="background: #f0f0f0;">
-      <th style="padding: 0.5rem; border: 1px solid #ccc;">Visa Type</th>
-      <th style="padding: 0.5rem; border: 1px solid #ccc;">Duration</th>
-      <th style="padding: 0.5rem; border: 1px solid #ccc;">Extension</th>
-      <th style="padding: 0.5rem; border: 1px solid #ccc;">Cost (THB)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding: 0.5rem; border: 1px solid #ccc;">Tourist (TR)</td>
-      <td>60 days</td>
-      <td>+30 days</td>
-      <td>1,900</td>
-    </tr>
-    <tr>
-      <td style="padding: 0.5rem; border: 1px solid #ccc;">Education (ED)</td>
-      <td>90 days</td>
-      <td>Renewable</td>
-      <td>2,000+</td>
-    </tr>
-    <tr>
-      <td style="padding: 0.5rem; border: 1px solid #ccc;">Non-O</td>
-      <td>90 days</td>
-      <td>1 year</td>
-      <td>1,900</td>
-    </tr>
-    <tr>
-      <td style="padding: 0.5rem; border: 1px solid #ccc;">Non-B</td>
-      <td>90 days</td>
-      <td>1 year</td>
-      <td>2,000+</td>
-    </tr>
-  </tbody>
-</table>
-
-<div id="tab-countdown" class="tabSection" style="display: none;">
- <button id="downloadReport" style="margin-top: 0.5rem;">🧾 Download TM30 Report (TXT)</button>
- <div id="visaCountdown" style="margin-top: 1rem; font-weight: bold;">
-    ⏳ Visa expires in: <span id="daysLeft">--</span> days
-    <br>
-    <label for="visaDate">📅 Set your visa expiration date:</label>
-    <input type="date" id="visaDate" />
-  </div>
-  <div id="visaWarning" style="color: red; font-weight: bold; display: none;">
-    ⚠️ Your visa is about to expire! Please take action.
-  </div>
-</div>
-{
-  "name": "Visa Tracker",
-  "short_name": "VisaTracker",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4caf50",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-<button onclick="biometricLogin()">🔐 Biometric Login</button>
-<link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#4caf50" />
-
-<input type="file" id="ocrUpload" accept="image/*" />
-<pre id="ocrResult"></pre>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
-<div id="tab-tm30" class="tabSection" style="display: none;">
-  <h2>🧾 Upload TM30 Form</h2>
-  <form id="tm30Form">
-   <label for="tm30Notes">📝 Notes (optional):</label><br>
-<textarea id="tm30Notes" rows="3" placeholder="e.g. Submitted at Chiang Mai Immigration Office"></textarea><br><br>
- <label for="tm30Label">🏷️ Label this submission (e.g. Chiang Mai condo):</label><br>
-<input type="text" id="tm30Label" placeholder="Optional" /><br><br>
-<label for="tm30File">Choose your TM30 PDF or image:</label><br>
-    <input type="file" id="tm30File" accept=".pdf,.jpg,.jpeg,.png" required /><br><br>
-   <label for="tm30Date">📅 Submission Date:</label><br>
-<p id="tm30Time" style="margin-top: 0.5rem; font-style: italic;"></p>
-<button id="deleteTM30" style="margin-top: 0.5rem;">🗑️ Delete File</button>
-<input type="date" id="tm30Date" required /><br><br>
- <button type="submit">Upload</button>
-  </form>
-  <p id="tm30Status" style="color: green; display: none;">✅ TM30 uploaded successfully!</p>
-</div>
-<button id="exportFirestoreCSV" style="margin-top: 1rem;">📤 Export All TM30 to CSV</button>
-<button onclick="googleLogin()">🔐 Sign in with Google</button>
+</html>
